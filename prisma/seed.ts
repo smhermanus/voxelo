@@ -8,12 +8,14 @@ const adapter = new PrismaPg({
 const prisma = new PrismaClient({ adapter });
  
 async function main() {
+  const phone = process.env.DEMO_TENANT_PHONE ?? "+27218022999";
+
   await prisma.tenant.upsert({
-    where: { phoneNumber: "+27600000000" }, // your Twilio number
+    where: { phoneNumber: phone },
     update: {},
     create: {
       name: "Joe's Plumbing Cape Town",
-      phoneNumber: "+27600000000",
+      phoneNumber: phone,
       greeting: "Hello, thanks for calling Joe's Plumbing. " +
         "I'm Joe's AI assistant. How can I help you today?",
       businessHours: {

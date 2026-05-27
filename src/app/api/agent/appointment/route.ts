@@ -1,23 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { prisma } from "@/lib/db";
 
-const DEMO_TENANT_PHONE = "+27600000000";
+const DEMO_TENANT_PHONE = process.env.DEMO_TENANT_PHONE ?? "+27218022999";
+
+const schema = z.object({
+  callerName: z.string().min(1).max(200),
+  callerPhone: z.string().min(5).max(30),
+  startTime: z.string().min(1),  // ISO datetime string e.g. "2025-06-01T10:00:00+02:00"
+  notes: z.string().max(2000).optional(),
+});
 
 export async function POST(req: NextRequest) {
-  const body = await req.json();
+  const parsed = schema.safeParse(await req.json());
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error.flatten() }, { status: 422 });
+  }
+  const { callerName, callerPhone, startTime, notes } = parsed.data;
 
   const tenant = await prisma.tenant.findUnique({
     where: { phoneNumber: DEMO_TENANT_PHONE },
   });
-  if (!tenant) return NextResponse.json({ error: "No tenant" }, { status: 404 });
+  if (!tenant) return NextResponse.json({ error: "Demo tenant not found" }, { status: 404 });
 
   const appointment = await prisma.appointment.create({
     data: {
       tenantId: tenant.id,
-      callerName: body.callerName,
-      callerPhone: body.callerPhone,
-      startTime: new Date(body.startTime),
-      notes: body.notes ?? null,
+      callerName,
+      callerPhone,
+      startTime: new Date(startTime),
+      notes: notes ?? null,
     },
   });
 
@@ -30,11 +42,11 @@ export async function POST(req: NextRequest) {
       },
       body: JSON.stringify({
         eventTypeId: parseInt(process.env.CALCOM_EVENT_TYPE_ID),
-        start: body.startTime,
+        start: startTime,
         responses: {
-          name: body.callerName,
-          email: `${String(body.callerPhone).replace(/\s+/g, "")}@phone.demo`,
-          notes: body.notes,
+          name: callerName,
+          email: `${callerPhone.replace(/\s+/g, "")}@phone.demo`,
+          notes: notes,
         },
         timeZone: "Africa/Johannesburg",
         language: "en",

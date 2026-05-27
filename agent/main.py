@@ -116,7 +116,16 @@ async def entrypoint(ctx: agents.JobContext):
     session = AgentSession(
         stt=deepgram.STT(model="nova-3", language="en-ZA"),
         llm=openai.LLM(model="gpt-4o-mini"),
-        tts=elevenlabs.TTS(voice_id="21m00Tcm4TlvDq8ikWAM"),  # Rachel
+        tts=elevenlabs.TTS(
+            voice_id="21m00Tcm4TlvDq8ikWAM",   # Rachel — warm, professional
+            model="eleven_turbo_v2_5",           # Low-latency expressive model
+            voice_settings=elevenlabs.VoiceSettings(
+                stability=0.35,         # Lower = more natural tonal variation (less robotic)
+                similarity_boost=0.80,  # Stays close to the original voice character
+                style=0.45,             # Moderate expressiveness — warm but not theatrical
+                use_speaker_boost=True, # Enhances clarity and naturalness
+            ),
+        ),
         vad=silero.VAD.load(),
         turn_detection=MultilingualModel(),
     )

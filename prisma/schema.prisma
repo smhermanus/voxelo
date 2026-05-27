@@ -79,35 +79,58 @@ model Generation {
 
 model Tenant {
   id            String   @id @default(cuid())
+  clerkOrgId    String?  @unique  // Clerk Organization ID (null for demo/seeded tenant)
   name          String
-  phoneNumber   String   @unique  // Twilio number
+  phoneNumber   String   @unique  // Twilio number (use "pending-<id>" until provisioned)
   greeting      String   @default("Hello, thank you for calling.")
   businessHours Json?    // {mon: {open: "08:00", close: "17:00"}, ...}
   voiceId       String   @default("21m00Tcm4TlvDq8ikWAM")
   faqContent    String?  @db.Text
   ownerEmail    String
   createdAt     DateTime @default(now())
- 
-  calls         Call[]
-  messages      Message[]
-  appointments  Appointment[]
+
+  users          User[]
+  calls          Call[]
+  messages       Message[]
+  appointments   Appointment[]
+  knowledgeBases KnowledgeBase[]
+  settings       Setting[]
+
+  @@index([clerkOrgId])
 }
- 
-model Call {
+
+model User {
   id          String   @id @default(cuid())
+  clerkUserId String   @unique
   tenantId    String
-  callerPhone String
-  callerName  String?
-  intent      String?  // booking, message, faq, etc.
-  transcript  Json?    // array of {role, text, timestamp}
-  duration    Int?     // seconds
-  recordingUrl String?
-  status      String   @default("active") // active, completed, transferred
+  role        String   @default("member") // owner, admin, member
   createdAt   DateTime @default(now())
- 
-  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  updatedAt   DateTime @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([clerkUserId])
 }
- 
+
+model Call {
+  id           String   @id @default(cuid())
+  tenantId     String
+  callerPhone  String
+  callerName   String?
+  intent       String?  // booking, message, faq, emergency, etc.
+  transcript   Json?    // array of {role, text, timestamp}
+  duration     Int?     // seconds
+  recordingUrl String?
+  status       String   @default("active") // active, completed, transferred
+  createdAt    DateTime @default(now())
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId])
+  @@index([tenantId, createdAt])
+}
+
 model Message {
   id          String   @id @default(cuid())
   tenantId    String
@@ -116,10 +139,13 @@ model Message {
   message     String   @db.Text
   delivered   Boolean  @default(false)
   createdAt   DateTime @default(now())
- 
-  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId])
+  @@index([tenantId, delivered])
 }
- 
+
 model Appointment {
   id          String   @id @default(cuid())
   tenantId    String
@@ -130,6 +156,38 @@ model Appointment {
   notes       String?
   status      String   @default("confirmed")
   createdAt   DateTime @default(now())
- 
-  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId])
+  @@index([tenantId, startTime])
+}
+
+model KnowledgeBase {
+  id       String @id @default(cuid())
+  tenantId String
+  title    String
+  content  String @db.Text
+  type     String @default("faq") // faq, procedure, policy, product
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+}
+
+model Setting {
+  id       String @id @default(cuid())
+  tenantId String
+  key      String
+  value    String @db.Text
+
+  updatedAt DateTime @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, key])
+  @@index([tenantId])
 }

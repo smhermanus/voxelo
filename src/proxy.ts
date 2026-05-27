@@ -1,7 +1,13 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)"]);
+const isPublicRoute = createRouteMatcher([
+  "/sign-in(.*)",
+  "/sign-up(.*)",
+  "/api/webhooks(.*)",  // Clerk + future inbound webhooks
+  "/api/agent(.*)",     // Called by ElevenLabs/LiveKit agent servers
+  "/api/twilio(.*)",    // Twilio voice/status webhooks (Track B)
+]);
 
 const isOrgSelectionRoute = createRouteMatcher(["/org-selection(.*)"]);
 

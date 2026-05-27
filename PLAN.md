@@ -1,3 +1,28 @@
+PROGRESS TRACKER (Last updated: May 2026)
+────────────────────────────────────────
+Day 1  ✅ Foundation — Next.js, Clerk auth, Prisma DB, tRPC
+Day 2  ✅ Dashboard skeleton — layout, sidebar, pages
+Day 3  ⚠️  Twilio — CODE DONE. TODO: configure Twilio console + run ngrok
+Day 4  ⚠️  LiveKit agent — CODE DONE. TODO: set up LiveKit Cloud SIP + connect Twilio SIP trunk
+Day 4.5 ✅ ElevenLabs Expressive — eleven_turbo_v2_5 + voice settings applied to agent/main.py
+Day 5  ✅ Tool calls — take_message, create_appointment, escalate_emergency all wired
+Day 6  ⚠️  Notifications — notifications.ts exists. TODO: confirm wired to /api/agent/messages endpoint
+Day 7  ⚠️  Calendar — Cal.com code done. TODO: add CALCOM_API_KEY + CALCOM_EVENT_TYPE_ID to .env.local
+Day 8  ❌ AI Receptionist dashboard — calls, messages, appointments views not yet built
+Day 9  ❌ Settings page + after-hours detection — not yet built
+Day 10 ❌ Deploy to Vercel + demo rehearsal — not yet done
+
+IMMEDIATE NEXT STEPS (in order):
+1. Run ngrok + configure Twilio webhook URL (Day 3 completion)
+2. Set up LiveKit Cloud project + SIP trunk + connect to Twilio (Day 4 completion)
+3. Run: cd agent && python main.py dev  — test full call loop
+4. Verify WhatsApp notifications fire on message save (Day 6 completion)
+5. Add CALCOM_API_KEY to .env.local and test booking flow (Day 7 completion)
+6. Build AI Receptionist dashboard views for calls/messages/appointments (Day 8)
+7. Build settings + after-hours logic (Day 9)
+8. Deploy and rehearse 4 demo scenarios (Day 10)
+
+────────────────────────────────────────
 STEP-BY-STEP DEMO BUILD GUIDE
 ────────────────────────────────────────
 AI Receptionist SaaS Platform
@@ -439,6 +464,95 @@ Call your Twilio number again. This time you should hear the LiveKit-powered AI 
 
 If something goes wrong
 99% of issues are: (1) wrong API key in .env, (2) Twilio SIP trunk misconfigured, (3) ngrok URL changed and Twilio webhook stale. Check the LiveKit Cloud dashboard — you can see live call logs there.
+
+Day 4.5: ElevenLabs Expressive Voice Configuration
+Goal: Make the AI receptionist sound warm, natural, and human-like — not robotic. This single change dramatically improves demo quality and client perception.
+
+Why Expressive Mode Matters
+The default ElevenLabs TTS sounds fine but can feel flat and monotonous over a full phone call. ElevenLabs Turbo v2.5 with tuned voice settings produces speech with natural tonal variation, appropriate pauses, and emotional warmth — indistinguishable from a human receptionist in a short demo call. This is a key differentiator when demonstrating to the client.
+
+Step 4.5.1 — Choose the Right Model
+
+Use eleven_turbo_v2_5 (NOT the older eleven_monolingual_v1 or eleven_multilingual_v1):
+
+Model               Latency    Expressiveness    Use Case
+eleven_flash_v2_5   ~75ms      Moderate          Ultra-low latency, acceptable quality
+eleven_turbo_v2_5   ~250ms     High              Best balance for voice agents ← USE THIS
+eleven_multilingual_v2  ~400ms Very High         Best quality, higher latency (too slow for calls)
+
+eleven_turbo_v2_5 hits the sweet spot: low enough latency for real-time phone calls with full
+expressiveness. The ~250ms response time is imperceptible in natural conversation.
+
+Step 4.5.2 — Voice Settings Explained
+
+The four parameters that control how human the voice sounds:
+
+stability (0.0–1.0)
+  0.0 = highly variable, emotional, sometimes unstable
+  1.0 = perfectly consistent, robotic and monotonous
+  → Set to 0.35 for a natural receptionist. Allows tonal variation without losing coherence.
+
+similarity_boost (0.0–1.0)
+  Controls how closely the output matches the original voice sample.
+  → Set to 0.80. High enough to maintain voice identity without over-constraining.
+
+style (0.0–1.0)
+  Amplifies the expressive style of the voice. 0 = neutral, 1 = exaggerated/theatrical.
+  → Set to 0.45. Warm and personable without sounding theatrical on a business call.
+
+use_speaker_boost (True/False)
+  Applies ElevenLabs' audio enhancement pipeline — improves clarity and naturalness.
+  → Always True for phone/voice agent use cases.
+
+Step 4.5.3 — Updated agent/main.py Configuration
+
+The following is already applied in agent/main.py:
+
+    tts=elevenlabs.TTS(
+        voice_id="21m00Tcm4TlvDq8ikWAM",   # Rachel — warm, professional
+        model="eleven_turbo_v2_5",           # Low-latency expressive model
+        voice_settings=elevenlabs.VoiceSettings(
+            stability=0.35,         # Lower = more natural tonal variation (less robotic)
+            similarity_boost=0.80,  # Stays close to the original voice character
+            style=0.45,             # Moderate expressiveness — warm but not theatrical
+            use_speaker_boost=True, # Enhances clarity and naturalness
+        ),
+    ),
+
+Step 4.5.4 — Voice Selection for South African Context
+
+Rachel (default) works well, but consider testing these ElevenLabs voices for the demo:
+
+Voice       Voice ID                        Character
+Rachel      21m00Tcm4TlvDq8ikWAM           Warm, professional (current)
+Sarah       EXAVITQu4vr4xnSDxMaL           Natural, conversational — very human-like
+Aria        9BWtsMINqrJLrRacOk9x           Confident, expressive — great for business
+Callum      N2lVS1w4EtoT3dr4eOWO           South African male accent option
+
+To test different voices: change voice_id in agent/main.py, restart python main.py dev,
+and make a test call. Pick the one that feels most natural for a Cape Town plumbing business.
+
+Step 4.5.5 — Testing Expressiveness
+
+After updating, test these phrases — the AI should respond with appropriate emotional tone:
+
+Scenario                                    Expected tone
+"I have a burst pipe!"                     Urgent, reassuring, fast
+"What time are you open on Saturdays?"    Friendly, informative, relaxed
+"I'd like to book a plumber please"       Warm, helpful, professional
+"Is this an emergency service?"            Clear, confident, reassuring
+
+If the voice sounds too flat: lower stability toward 0.25, raise style toward 0.55.
+If the voice sounds too theatrical: raise stability toward 0.50, lower style toward 0.30.
+
+Step 4.5.6 — No Dashboard or API Changes Required
+
+ElevenLabs expressive mode changes are entirely in agent/main.py. No Next.js API routes,
+database schema, or dashboard components need to be modified. The voice_id stored in the
+Tenant model (voiceId field) maps to an ElevenLabs voice_id — when multi-tenancy is built,
+the voice settings can also be stored per-tenant and passed to the agent at call time.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Day 5: Tool Calls — Saving Messages & Appointments
 Goal: When the agent collects a message or appointment, save it to the database via your Next.js API.
