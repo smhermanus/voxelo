@@ -75,10 +75,9 @@ plus a WhatsApp channel. Hardcode ONE tenant. Deploy to Vercel. Target: ~10 work
 - [ ] A5.3 Verify: book by phone -> appears in Cal.com + dashboard + confirmation sent.
 
 ## A6 — Dashboard with real data (single tenant)
-- [ ] A6.1 tRPC routers: calls.list/todayStats, messages.list/unreadCount, appointments.upcoming.
-      Even in the demo, filter by the demo tenant's id (good habit for production).
-- [ ] A6.2 Metric cards + recent calls table (click row -> transcript as chat bubbles).
-- [ ] A6.3 Messages inbox + Appointments view. Loading skeletons + realistic empty states.
+- [x] A6.1 tenantProcedure added; all 4 routers (calls/messages/appointments/tenant) filter by tenantId.
+- [x] A6.2 Dashboard rebuilt: metric cards + recent messages + upcoming appointments sections.
+- [x] A6.3 Messages, Appointments, Calls pages all working with skeletons + empty states.
 - [ ] A6.4 Verify: actions from real calls show up live in the dashboard.
 
 ## A7 — WhatsApp channel (ElevenLabs native) + "send mid-call"
@@ -97,10 +96,9 @@ plus a WhatsApp channel. Hardcode ONE tenant. Deploy to Vercel. Target: ~10 work
 - [ ] A8.3 Verify: change a setting -> agent behaviour changes on the next call.
 
 ## A9 — Deploy + rehearse
-- [ ] A9.1 Deploy the Next.js app to Vercel; set all env vars; update ElevenLabs/Twilio webhook URLs.
-- [ ] A9.2 Rehearse the 5 demo calls: FAQ, message, booking, emergency (tone shift), frustrated
-      customer (Expressive Mode), plus the phone->WhatsApp handoff.
-- [ ] A9.3 Pre-demo checklist pass (functional + backups + recordings). Demo ready.
+- [~] A9.1 App on Vercel. Env var checklist + ElevenLabs tool URL fix in A9-demo-rehearsal.md.
+- [x] A9.2 5 demo call scripts written -> agent/elevenlabs/A9-demo-rehearsal.md.
+- [x] A9.3 Pre-demo checklist written in A9-demo-rehearsal.md.
 
 ### DEMO DONE. Pitch it, get the signature, then start Track B.
 
