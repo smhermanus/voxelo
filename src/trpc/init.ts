@@ -3,6 +3,8 @@ import { auth } from '@clerk/nextjs/server';
 import { initTRPC, TRPCError } from '@trpc/server';
 import { cache } from 'react';
 import superjson from "superjson";
+import { prisma } from "@/lib/db";
+
 export const createTRPCContext = cache(async () => {
   /**
    * @see: https://trpc.io/docs/server/context
@@ -60,4 +62,32 @@ export const orgProcedure = baseProcedure.use(async ({ next }) => {
   }
 
   return next({ ctx: { userId, orgId } });
+});
+
+// Tenant-scoped procedure — resolves tenantId from Clerk org, falls back to demo tenant.
+// All data-fetching procedures MUST use this to enforce per-tenant isolation.
+export const tenantProcedure = baseProcedure.use(async ({ next }) => {
+  const { userId, orgId } = await auth();
+
+  if (!userId) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
+  // Try the Clerk org → Tenant mapping first (production path)
+  const tenant = orgId
+    ? await prisma.tenant.findFirst({ where: { clerkOrgId: orgId } })
+    : null;
+
+  // Fall back to the seeded demo tenant (demo / local dev path)
+  const resolved =
+    tenant ??
+    (await prisma.tenant.findUnique({
+      where: { phoneNumber: process.env.DEMO_TENANT_PHONE ?? "+27218022999" },
+    }));
+
+  if (!resolved) {
+    throw new TRPCError({ code: "NOT_FOUND", message: "Tenant not configured" });
+  }
+
+  return next({ ctx: { userId, tenantId: resolved.id } });
 });

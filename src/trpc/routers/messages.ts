@@ -1,24 +1,35 @@
 import { z } from "zod";
-import { createTRPCRouter, authProcedure } from "../init";
+import { createTRPCRouter, tenantProcedure } from "../init";
 import { prisma } from "@/lib/db";
 
 export const messagesRouter = createTRPCRouter({
-  list: authProcedure.query(async () => {
+  list: tenantProcedure.query(async ({ ctx }) => {
     return prisma.message.findMany({
+      where: { tenantId: ctx.tenantId },
       orderBy: { createdAt: "desc" },
       take: 50,
     });
   }),
 
-  unreadCount: authProcedure.query(async () => {
-    return prisma.message.count({ where: { delivered: false } });
+  recent: tenantProcedure.query(async ({ ctx }) => {
+    return prisma.message.findMany({
+      where: { tenantId: ctx.tenantId },
+      orderBy: { createdAt: "desc" },
+      take: 5,
+    });
   }),
 
-  markDelivered: authProcedure
+  unreadCount: tenantProcedure.query(async ({ ctx }) => {
+    return prisma.message.count({
+      where: { tenantId: ctx.tenantId, delivered: false },
+    });
+  }),
+
+  markDelivered: tenantProcedure
     .input(z.object({ id: z.string() }))
-    .mutation(async ({ input }) => {
+    .mutation(async ({ ctx, input }) => {
       return prisma.message.update({
-        where: { id: input.id },
+        where: { id: input.id, tenantId: ctx.tenantId },
         data: { delivered: true },
       });
     }),
