@@ -1,27 +1,26 @@
 import { z } from "zod";
-import { createTRPCRouter, authProcedure } from "../init";
+import { createTRPCRouter, tenantProcedure } from "../init";
 import { prisma } from "@/lib/db";
 
-const DEMO_TENANT_PHONE = "+27600000000";
-
 export const tenantRouter = createTRPCRouter({
-  get: authProcedure.query(async () => {
+  get: tenantProcedure.query(async ({ ctx }) => {
     return prisma.tenant.findUnique({
-      where: { phoneNumber: DEMO_TENANT_PHONE },
+      where: { id: ctx.tenantId },
     });
   }),
 
-  update: authProcedure
+  update: tenantProcedure
     .input(
       z.object({
         greeting: z.string().min(1).optional(),
+        ownerEmail: z.string().email().optional(),
         faqContent: z.string().optional(),
         businessHours: z.record(z.string(), z.unknown()).optional(),
       }),
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ ctx, input }) => {
       return prisma.tenant.update({
-        where: { phoneNumber: DEMO_TENANT_PHONE },
+        where: { id: ctx.tenantId },
         data: {
           ...input,
           ...(input.businessHours !== undefined && {

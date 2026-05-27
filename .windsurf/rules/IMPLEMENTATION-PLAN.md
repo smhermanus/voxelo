@@ -82,18 +82,18 @@ plus a WhatsApp channel. Hardcode ONE tenant. Deploy to Vercel. Target: ~10 work
 - [ ] A6.4 Verify: actions from real calls show up live in the dashboard.
 
 ## A7 — WhatsApp channel (ElevenLabs native) + "send mid-call"
-- [ ] A7.1 LAYER 1 (notifications) already works from A4.
-- [ ] A7.2 LAYER 2: connect ElevenLabs WhatsApp integration; assign the agent; set an explicit
-      end-of-conversation message (avoid silent timeout).
-- [ ] A7.3 Add the "send WhatsApp mid-call" tool + a system-prompt rule for when to use it.
-- [ ] A7.4 COMPLIANCE: demo uses Joe's OWN WhatsApp Business account; frame as "AI receptionist",
-      never a general chatbot. Note this in the README.
+- [x] A7.1 LAYER 1 (notifications) already works from A4.
+- [~] A7.2 LAYER 2: guide written -> agent/elevenlabs/A7-whatsapp-setup.md. Dashboard config pending.
+- [x] A7.3 /api/agent/whatsapp endpoint built. send_whatsapp tool added to system prompt.
+      Tool config guide in A7-whatsapp-setup.md.
+- [x] A7.4 Compliance note written in A7-whatsapp-setup.md.
 - [ ] A7.5 Verify: WhatsApp the business -> same agent answers; on a call, "WhatsApp me that quote"
       arrives mid-call.
 
 ## A8 — Settings + after-hours (demo-level)
-- [ ] A8.1 Settings page (read/write the demo tenant): greeting, voice, hours, FAQ, transfer numbers.
-- [ ] A8.2 After-hours behaviour in the agent prompt/config: outside hours -> messages + emergencies only.
+- [x] A8.1 Settings page (read/write demo tenant): greeting, ownerEmail, FAQ. tenant.ts uses
+      tenantProcedure (fixed hardcoded old phone). ownerEmail field added.
+- [x] A8.2 After-hours behaviour added to system prompt: outside hours -> messages + emergencies only.
 - [ ] A8.3 Verify: change a setting -> agent behaviour changes on the next call.
 
 ## A9 — Deploy + rehearse

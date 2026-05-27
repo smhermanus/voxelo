@@ -24,6 +24,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 const settingsSchema = z.object({
   greeting: z.string().min(1, "Greeting is required"),
+  ownerEmail: z.string().email("Enter a valid email"),
   faqContent: z.string().optional(),
 });
 type SettingsValues = z.infer<typeof settingsSchema>;
@@ -36,13 +37,14 @@ export default function SettingsPage() {
 
   const form = useForm<SettingsValues>({
     resolver: zodResolver(settingsSchema),
-    defaultValues: { greeting: "", faqContent: "" },
+    defaultValues: { greeting: "", ownerEmail: "", faqContent: "" },
   });
 
   useEffect(() => {
     if (tenant) {
       form.reset({
         greeting: tenant.greeting,
+        ownerEmail: tenant.ownerEmail,
         faqContent: tenant.faqContent ?? "",
       });
     }
@@ -98,6 +100,29 @@ export default function SettingsPage() {
               {form.formState.errors.greeting && (
                 <p className="text-xs text-destructive">
                   {form.formState.errors.greeting.message}
+                </p>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Notifications</CardTitle>
+              <CardDescription>
+                Where to send alerts for new messages, bookings, and emergencies.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <Label htmlFor="ownerEmail">Owner email</Label>
+              <Input
+                id="ownerEmail"
+                type="email"
+                {...form.register("ownerEmail")}
+                placeholder="joe@joes-plumbing.co.za"
+              />
+              {form.formState.errors.ownerEmail && (
+                <p className="text-xs text-destructive">
+                  {form.formState.errors.ownerEmail.message}
                 </p>
               )}
             </CardContent>
