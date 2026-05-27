@@ -65,8 +65,8 @@ plus a WhatsApp channel. Hardcode ONE tenant. Deploy to Vercel. Target: ~10 work
 - [ ] A3.3 Verify: on a call, "leave a message for Joe" -> a Message row appears in the DB.
 
 ## A4 — Notifications (the WOW moment)
-- [ ] A4.1 `src/lib/notifications.ts`: sendWhatsApp (Twilio WhatsApp sandbox for demo) + sendEmail (Resend).
-- [ ] A4.2 Fire notifications from the agent endpoints (message/appointment/emergency).
+- [x] A4.1 `src/lib/notifications.ts`: sendWhatsApp (Twilio) + sendEmail (Resend). Both implemented.
+- [x] A4.2 Notifications fire from all three endpoints (message/appointment/emergency).
 - [ ] A4.3 Verify: leave a message by phone -> WhatsApp lands on the owner's phone within seconds.
 
 ## A5 — Appointment booking

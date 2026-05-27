@@ -138,3 +138,23 @@ Invoke-RestMethod -Method POST -Uri "http://localhost:3000/api/agent/emergency" 
 
 All three should return `{ "success": true, "id": "..." }`.
 Check the Messages and Appointments tables in Prisma Studio to confirm rows were created.
+
+
+```powershell
+# Message
+Invoke-RestMethod -Method POST -Uri "https://voxelo.co.za/api/agent/messages" `
+  -ContentType "application/json" `
+  -Body '{"callerName":"Test Caller","callerPhone":"+27821234567","message":"Please call me back about a leaking pipe."}'
+
+# Appointment
+Invoke-RestMethod -Method POST -Uri "https://voxelo.co.za/api/agent/appointment" `
+  -ContentType "application/json" `
+  -Body '{"callerName":"Test Caller","callerPhone":"+27821234567","startTime":"2025-06-10T10:00:00+02:00","notes":"Blocked drain at 12 Main Road, Rondebosch"}'
+
+# Emergency
+Invoke-RestMethod -Method POST -Uri "https://voxelo.co.za/api/agent/emergency" `
+  -ContentType "application/json" `
+  -Body '{"callerPhone":"+27821234567","issue":"Burst pipe flooding the kitchen"}'
+
+
+```

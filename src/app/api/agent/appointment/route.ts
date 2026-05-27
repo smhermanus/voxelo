@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
+import { sendWhatsApp, sendOwnerEmail } from "@/lib/notifications";
 
 const DEMO_TENANT_PHONE = process.env.DEMO_TENANT_PHONE ?? "+27218022999";
 
@@ -53,6 +54,24 @@ export async function POST(req: NextRequest) {
       }),
     }).catch(() => {});
   }
+
+  const ownerPhone = process.env.OWNER_WHATSAPP;
+  const apptDate = new Date(startTime).toLocaleString("en-ZA", {
+    timeZone: "Africa/Johannesburg",
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+  if (ownerPhone) {
+    await sendWhatsApp(
+      ownerPhone,
+      `📅 New appointment booked!\n\n${callerName} (${callerPhone})\n🗓 ${apptDate}\n📝 ${notes ?? "No notes"}`,
+    );
+  }
+  await sendOwnerEmail(
+    tenant.ownerEmail,
+    "New appointment via AI Receptionist",
+    `Client: ${callerName} (${callerPhone})\nDate: ${apptDate}\nNotes: ${notes ?? "None"}`,
+  );
 
   return NextResponse.json({ success: true, id: appointment.id });
 }
