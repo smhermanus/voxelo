@@ -36,6 +36,7 @@ import {
   Calendar,
   SlidersHorizontal,
   BarChart2,
+  BookOpen,
 } from "lucide-react";
 import Link from "next/link";
 import { UsageContainer } from "@/features/billing/components/usage-container";
@@ -153,6 +154,11 @@ export function DashboardSidebar() {
       title: "Receptionist settings",
       url: "/settings",
       icon: SlidersHorizontal,
+    },
+    {
+      title: "Internal FAQ",
+      url: "/dashboard/faq",
+      icon: BookOpen,
     },
   ];
 

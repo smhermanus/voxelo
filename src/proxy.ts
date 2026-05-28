@@ -4,6 +4,8 @@ import { NextResponse } from "next/server";
 const isPublicRoute = createRouteMatcher([
   "/sign-in(.*)",
   "/sign-up(.*)",
+  "/home(.*)",          // Public landing page
+  "/faq(.*)",           // Client-facing FAQ (public)
   "/api/webhooks(.*)",  // Clerk + future inbound webhooks
   "/api/agent(.*)",     // Called by ElevenLabs/LiveKit agent servers
   "/api/twilio(.*)",    // Twilio voice/status webhooks (Track B)
