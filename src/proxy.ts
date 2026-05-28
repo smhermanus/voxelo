@@ -2,6 +2,7 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 const isPublicRoute = createRouteMatcher([
+  "/",                  // Root — page component handles auth-based redirect
   "/sign-in(.*)",
   "/sign-up(.*)",
   "/home(.*)",          // Public landing page
