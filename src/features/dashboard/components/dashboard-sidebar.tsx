@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { VoiceWave } from "@/app/(marketing)/components/voice-wave";
 import { usePathname } from "next/navigation";
 
 import {
@@ -185,15 +185,9 @@ export function DashboardSidebar() {
       <SidebarHeader className="flex flex-col gap-4 pt-4">
         <div 
         className="flex items-center gap-2 pl-1 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:pl-0">
-          <Image
-            src="/logo.svg"
-            alt="Voxelo"
-            width={24}
-            height={24}
-            className="rounded-sm"
-          />
+          <VoiceWave size={26} />
           <span className="group-data-[collapsible=icon]:hidden font-semibold text-lg tracking-tighter text-foreground">
-            Voxelo
+            V<span style={{ color: "var(--accent, #5b5ef4)" }}>o</span>xelo
           </span>
           <SidebarTrigger className="ml-auto lg:hidden" />
         </div>
