@@ -7,6 +7,14 @@ const isPublicRoute = createRouteMatcher([
   "/sign-up(.*)",
   "/home(.*)",          // Public landing page
   "/faq(.*)",           // Client-facing FAQ (public)
+  "/about(.*)",         // Company pages
+  "/careers(.*)",
+  "/blog(.*)",
+  "/contact(.*)",
+  "/privacy(.*)",       // Legal pages
+  "/terms(.*)",
+  "/security(.*)",
+  "/dpa(.*)",
   "/api/webhooks(.*)",  // Clerk + future inbound webhooks
   "/api/agent(.*)",     // Called by ElevenLabs/LiveKit agent servers
   "/api/twilio(.*)",    // Twilio voice/status webhooks (Track B)

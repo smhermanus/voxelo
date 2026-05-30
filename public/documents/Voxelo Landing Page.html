@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Voxelo — AI agents that handle every conversation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="voxelo-landing.css" />
+</head>
+<body>
+
+<!-- ============================ NAV ============================ -->
+<nav class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top" aria-label="Voxelo home">
+      <svg class="vmark" width="34" height="34" viewBox="0 0 100 100"><rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/><path class="bubble" d="M30 58 L26 82 L52 62 Z"/><g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g></svg>
+      <span class="wm">V<span class="x">o</span>xelo</span>
+    </a>
+    <div class="nav-links">
+      <a href="#demo">Live demo</a>
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#demo" class="btn btn-ghost">Try it live</a>
+      <a href="#cta" class="btn btn-primary" data-open-form data-form-type="demo">Book a demo</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================ HERO ============================ -->
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="hero-badge"><span class="dot-live"></span> Live agents · 40+ languages · 24/7</span>
+      <h1>The AI agent that runs your <span class="rot-wrap"><span class="rot" id="rotWord" style="transition:opacity .22s ease, transform .22s ease;">retail</span></span> support.</h1>
+      <p class="hero-sub">Voxelo resolves customer conversations across chat, voice, and email — instantly, in your tone, for any industry.</p>
+      <div class="hero-actions">
+        <a href="#demo" class="btn btn-primary btn-lg">Talk to an agent now</a>
+        <a href="#cta" class="btn btn-ghost btn-lg" data-open-form data-form-type="demo">Book a demo</a>
+      </div>
+      <div class="hero-trust">
+        <div class="avatars"><span>LG</span><span>HM</span><span>AB</span><span>+</span></div>
+        Trusted by support teams handling millions of conversations.
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-orb">
+        <svg class="vmark vmark--iris vmark--live" viewBox="0 0 100 100"><rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/><path class="bubble" d="M30 58 L26 82 L52 62 Z"/><g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g></svg>
+      </div>
+      <div class="hero-float f1">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4 13 4 4 12-12"/></svg></span>
+        <span><span class="k">Resolution rate</span><span class="v">94%</span></span>
+      </div>
+      <div class="hero-float f2">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg></span>
+        <span><span class="k">Avg. reply</span><span class="v">0.8s</span></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============================ TRUST STRIP ============================ -->
+<section class="strip">
+  <div class="wrap strip-inner">
+    <span class="strip-label">Powering support for</span>
+    <div class="strip-logos">
+      <span>Lumen&nbsp;Goods</span><span>Harbor&nbsp;Mutual</span><span>Arc&nbsp;Bank</span><span>Nova&nbsp;Mobile</span><span>Wander</span><span>Meridian</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ DEMO ============================ -->
+<section class="section demo" id="demo">
+  <div class="wrap">
+    <div class="demo-head">
+      <p class="eyebrow">Live demo</p>
+      <h2>Pick an industry. Talk to its agent.</h2>
+      <p>These agents are really thinking — powered live. Choose a business, then <b>chat</b> or tap <b>Call</b> to hear Vox answer out loud.</p>
+    </div>
+
+    <div class="demo-layout">
+      <!-- industry selector -->
+      <div class="ind-list" id="indList"></div>
+
+      <!-- phone -->
+      <div class="demo-stage">
+        <div class="phone">
+          <div class="screen">
+            <div class="scr-head">
+              <div class="scr-avatar"><svg class="vmark vmark--iris" viewBox="0 0 100 100"><rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/><path class="bubble" d="M30 58 L26 82 L52 62 Z"/><g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g></svg></div>
+              <div>
+                <div class="who" id="scrWho">Lumen Goods</div>
+                <div class="sub" id="scrTag"><span class="dot-live"></span> Vox · AI agent</div>
+              </div>
+              <div class="seg">
+                <button id="segChat" class="on">Chat</button>
+                <button id="segCall">Call</button>
+              </div>
+            </div>
+
+            <!-- CHAT -->
+            <div class="chat-view" id="chatView">
+              <div class="chat-log" id="chatLog"></div>
+              <div class="quick" id="quickRow"></div>
+              <div class="chat-input">
+                <input id="chatInput" type="text" placeholder="Type a message…" autocomplete="off" />
+                <button class="send-btn" id="sendBtn" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg></button>
+              </div>
+            </div>
+
+            <!-- CALL -->
+            <div class="call-view" id="callView">
+              <div class="call-top">
+                <div class="nm" id="callName">Lumen Goods</div>
+                <div class="tm" id="callTime">00:00</div>
+              </div>
+              <div class="call-orb" id="callOrb">
+                <span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span>
+                <div class="call-disc"><svg class="vmark vmark--iris vmark--live" viewBox="0 0 100 100"><rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/><path class="bubble" d="M30 58 L26 82 L52 62 Z"/><g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g></svg></div>
+              </div>
+              <div class="call-caption" id="callCaption"></div>
+              <div class="call-quick" id="callQuick"></div>
+              <div class="call-controls">
+                <button class="call-ctrl mic" id="micBtn" aria-label="Speak"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+                <button class="call-ctrl end" id="endBtn" aria-label="End call"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5C7 5 17 5 22 9.5l-2.5 3-3.5-1v-2.5a13 13 0 0 0-8 0V12l-3.5 1z"/></svg></button>
+                <button class="call-ctrl" id="muteBtn" aria-label="Mute"></button>
+              </div>
+              <div class="call-hint">Vox speaks aloud · tap a phrase or the mic to reply</div>
+            </div>
+
+          </div>
+        </div>
+        <p class="demo-disclaimer"><b>This is a live demo.</b> Vox invents plausible account details for illustration. Voice plays through your browser.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ HOW IT WORKS ============================ -->
+<section class="section" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">How it works</p>
+      <h2>Live in days, not quarters.</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="n">STEP 01</span>
+        <h3>Connect your knowledge</h3>
+        <p>Point Voxelo at your help center, docs, and past tickets. It learns your products, policies, and edge cases in minutes.</p>
+        <div class="bar"></div>
+      </div>
+      <div class="step">
+        <span class="n">STEP 02</span>
+        <h3>Tune the voice</h3>
+        <p>Set the tone, guardrails, and escalation rules. Vox sounds like your brand — never robotic, never off-script.</p>
+        <div class="bar"></div>
+      </div>
+      <div class="step">
+        <span class="n">STEP 03</span>
+        <h3>Deploy everywhere</h3>
+        <p>Drop the widget on your site, route your phone line, and connect email. One agent across every channel.</p>
+        <div class="bar"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FEATURES ============================ -->
+<section class="section" id="features" style="background:var(--paper-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Capabilities</p>
+      <h2>Everything a great agent does — at machine scale.</h2>
+    </div>
+    <div class="feat-grid">
+      <div class="feat">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M5 6h14a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H10l-4 3v-3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/></svg></span>
+        <h3>Omnichannel</h3>
+        <p>Chat, voice, and email handled by one agent with a single shared memory of the customer.</p>
+      </div>
+      <div class="feat">
+        <span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.2"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></span>
+        <h3>Seamless handoff</h3>
+        <p>When it's truly human work, Vox routes to the right person with full context — no repeating.</p>
+      </div>
+      <div class="feat">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 18 0 9 9 0 0 1-18 0z"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18z"/></svg></span>
+        <h3>40+ languages</h3>
+        <p>Every customer in their own language, automatically — no extra teams, no extra cost.</p>
+      </div>
+      <div class="feat">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M4 18V9m5 9V5m5 13v-6m5 6V8"/></svg></span>
+        <h3>Live analytics</h3>
+        <p>See resolution rate, sentiment, and the top reasons customers reach out — in real time.</p>
+      </div>
+      <div class="feat">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V7z"/></svg></span>
+        <h3>Secure &amp; compliant</h3>
+        <p>SOC 2, GDPR, and PII redaction built in. Identity verification before any sensitive action.</p>
+      </div>
+      <div class="feat">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M12 4v3m0 10v3m8-8h-3M7 12H4m13.5-5.5-2 2m-7 7-2 2m11 0-2-2m-7-7-2-2"/><circle cx="12" cy="12" r="3"/></svg></span>
+        <h3>Takes action</h3>
+        <p>Not just answers — Vox issues refunds, books appointments, and updates records through your tools.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ STATS ============================ -->
+<section class="section stats">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="stat"><div class="v">100%</div><div class="l">SA Hosted</div></div>
+      <div class="stat"><div class="v">15min</div><div class="l">setup time</div></div>
+      <div class="stat"><div class="v">0</div><div class="l">missed calls</div></div>
+      <div class="stat"><div class="v">24/7</div><div class="l">always on, every time zone</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ INTEGRATIONS ============================ -->
+<section class="section integrations">
+  <div class="wrap">
+    <div class="section-head" style="text-align:center; margin:0 auto 44px;">
+      <p class="eyebrow" style="justify-content:center;">Integrations</p>
+      <h2>Plugs into the stack you already run.</h2>
+    </div>
+    <div class="int-grid">
+      <div class="int-chip"><span class="d"></span>Zendesk</div>
+      <div class="int-chip"><span class="d"></span>Salesforce</div>
+      <div class="int-chip"><span class="d"></span>Shopify</div>
+      <div class="int-chip"><span class="d"></span>Intercom</div>
+      <div class="int-chip"><span class="d"></span>Slack</div>
+      <div class="int-chip"><span class="d"></span>Twilio</div>
+      <div class="int-chip"><span class="d"></span>HubSpot</div>
+      <div class="int-chip"><span class="d"></span>Stripe</div>
+      <div class="int-chip"><span class="d"></span>Freshdesk</div>
+      <div class="int-chip"><span class="d"></span>Notion</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ PRICING ============================ -->
+<section class="section" id="pricing">
+  <div class="wrap">
+    <div class="section-head" style="text-align:center; margin:0 auto 14px;">
+      <p class="eyebrow" style="justify-content:center;">Pricing</p>
+      <h2>Pay for minutes, not headcount.</h2>
+      <p>Tiered monthly plans with generous included minutes and a clear per-minute overage — predictable for you, scalable for us.</p>
+    </div>
+    <div style="text-align:center;">
+      <div class="price-toggle" id="priceToggle">
+        <button data-cur="zar" class="on"><span class="flag">🇿🇦</span> ZAR</button>
+        <button data-cur="usd"><span class="flag">🌍</span> USD</button>
+      </div>
+    </div>
+
+    <div class="price-carousel" style="margin-top:42px;">
+      <button class="pc-arrow prev" id="pcPrev" aria-label="Previous plans"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+      <div class="pc-viewport" id="pcViewport">
+        <div class="pc-track" id="priceGrid"></div>
+      </div>
+      <button class="pc-arrow next" id="pcNext" aria-label="More plans"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+    </div>
+    <div class="pc-dots" id="pcDots"></div>
+
+    <!-- Add-ons + perks -->
+    <div class="price-extras">
+      <div class="addons">
+        <h4>Add-ons (ZAR)</h4>
+        <ul>
+          <li><span class="dot"></span><span>Dedicated +27 number — <b>R150&#8211;R350/mo</b></span></li>
+          <li><span class="dot"></span><span>CRM / database integration — <b>from R6,000 setup</b></span></li>
+          <li><span class="dot"></span><span>Custom voice clone — <b>R500 once&#8209;off</b></span></li>
+          <li><span class="dot"></span><span>Extra concurrent lines — <b>metered</b></span></li>
+          <li><span class="dot"></span><span>Premium analytics — <b>add&#8209;on</b></span></li>
+        </ul>
+      </div>
+      <div class="perks">
+        <h4>Every plan includes</h4>
+        <ul>
+          <li><svg viewBox="0 0 24 24"><path d="m4 13 4 4 12-12"/></svg><span><b>Free 7&#8211;14 day trial</b> — no card required.</span></li>
+          <li><svg viewBox="0 0 24 24"><path d="m4 13 4 4 12-12"/></svg><span><b>Annual billing</b> — get ~2 months free.</span></li>
+          <li><svg viewBox="0 0 24 24"><path d="m4 13 4 4 12-12"/></svg><span>Chat, voice &amp; email in one agent.</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="price-fine">Indicative recommendations · excl. VAT · final pricing is yours to set.</p>
+  </div>
+</section>
+
+<!-- ============================ FINAL CTA ============================ -->
+<section class="section cta-band" id="cta">
+  <div class="wrap cta-inner">
+    <h2>Ready to hand off the busywork?</h2>
+    <p>See Voxelo answer your real customer questions in a 20-minute demo.</p>
+    <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+      <a href="#demo" class="btn btn-onink btn-lg">Talk to an agent</a>
+      <a href="#cta" class="btn btn-lg" data-open-form data-form-type="demo" style="background:transparent; color:#fff; border-color:rgba(255,255,255,.5);">Book a demo</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="wm">
+          <svg class="vmark vmark--rev" width="30" height="30" viewBox="0 0 100 100"><rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/><path class="bubble" d="M30 58 L26 82 L52 62 Z"/><g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g></svg>
+          Voxelo
+        </div>
+        <p>AI agents that handle every customer conversation — built to drop into any industry.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <a href="#demo">Live demo</a><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#how">How it works</a>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <a href="#">About</a><a href="#">Careers</a><a href="#">Blog</a><a href="#">Contact</a>
+      </div>
+      <div class="foot-col">
+        <h4>Legal</h4>
+        <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Security</a><a href="#">DPA</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 VOXELO, INC.</span>
+      <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8ac2cfc6c6c5cadcc5d2cfc6c5a4cbc3">[email&#160;protected]</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================ LEAD FORM MODAL ============================ -->
+<div class="modal-overlay" id="formModal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="formTitle">
+    <button class="modal-close js-close-form" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    <div id="formBody">
+      <span class="eyebrow" id="formEyebrow">Book a demo</span>
+      <h3 id="formTitle">See Voxelo answer your real customer questions.</h3>
+      <form id="leadForm" novalidate>
+        <input type="hidden" name="type" id="formType" />
+        <div class="field">
+          <label for="lf_name">Full name</label>
+          <input id="lf_name" name="name" required placeholder="Mara Velasquez" />
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="lf_email">Work email</label>
+            <input id="lf_email" type="email" name="email" required placeholder="you@company.com" />
+          </div>
+          <div class="field">
+            <label for="lf_company">Company</label>
+            <input id="lf_company" name="company" required placeholder="Company name" />
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="lf_industry">Industry</label>
+            <select id="lf_industry" name="industry"></select>
+          </div>
+          <div class="field">
+            <label for="lf_volume">Monthly call volume</label>
+            <select id="lf_volume" name="volume">
+              <option>Under 500</option>
+              <option>500 – 2,000</option>
+              <option>2,000 – 5,000</option>
+              <option>5,000+</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="lf_msg">Anything we should know? <span style="font-weight:400; color:var(--g-400);">(optional)</span></label>
+          <textarea id="lf_msg" name="message" rows="3" placeholder="Tell us about your support setup…"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Request access</button>
+        <p class="form-fine">No spam. A human replies within one business day.</p>
+      </form>
+    </div>
+    <div id="formSuccess" class="modal-success" hidden>
+      <div class="succ-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 13 5 5L20 7"/></svg></div>
+      <h3>You're in, <span id="successName">there</span>!</h3>
+      <p>Thanks — our team will reach out within one business day. Prefer email? <a href="/cdn-cgi/l/email-protection#5038353c3c3f10263f28353c3f7e3139" style="color:var(--accent); font-weight:600;"><span class="__cf_email__" data-cfemail="cfa7aaa3a3a08fb9a0b7aaa3a0e1aea6">[email&#160;protected]</span></a></p>
+      <button class="btn btn-ghost js-close-form">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================ STICKY CHAT LAUNCHER ============================ -->
+<button class="vox-fab" id="voxFab" aria-label="Chat with Vox">
+  <svg class="vmark vmark--iris" viewBox="0 0 100 100"><rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/><path class="bubble" d="M30 58 L26 82 L52 62 Z"/><g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g></svg>
+  <span class="fab-label">Chat with Vox</span>
+  <span class="fab-dot"></span>
+</button>
+
+<div class="vox-panel" id="voxPanel" role="dialog" aria-label="Chat with Vox">
+  <div class="vox-phead">
+    <div class="av"><svg class="vmark vmark--iris" viewBox="0 0 100 100"><rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/><path class="bubble" d="M30 58 L26 82 L52 62 Z"/><g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g></svg></div>
+    <div>
+      <div class="who">Vox</div>
+      <div class="st"><span class="dot-live"></span> Voxelo assistant · online</div>
+    </div>
+    <button class="close" id="voxClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="vox-plog" id="voxLog"></div>
+  <div class="vox-quick" id="voxQuick"></div>
+  <div class="vox-pinput">
+    <input id="voxInput" type="text" placeholder="Ask about Voxelo…" autocomplete="off" />
+    <button class="send-btn" id="voxSend" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg></button>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="voxelo-demo.js"></script>
+</body>
+</html>

@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Voxelo — Brand Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    /* ---- Core palette (oklch authoritative) ---- */
+    --ink:      oklch(0.18 0.014 272);   /* near-black slate  ~#15161D */
+    --ink-soft: oklch(0.34 0.018 272);   /* secondary text    ~#3A3C49 */
+    --paper:    oklch(0.985 0.004 95);   /* warm white        ~#FBFAF6 */
+    --paper-2:  oklch(0.965 0.005 95);   /* card surface      ~#F4F2EC */
+
+    --accent:        oklch(0.55 0.215 272);  /* electric iris  ~#4B45E6 */
+    --accent-light:  oklch(0.70 0.165 272);  /* tint / gradient ~#8A86F2 */
+    --accent-dark:   oklch(0.42 0.175 272);  /* pressed / depth ~#332FB0 */
+    --accent-press:  oklch(0.48 0.205 272);
+    --accent-wash:   oklch(0.95 0.03 272);    /* tinted surface */
+
+    --live: oklch(0.74 0.17 150);  /* status green ~#36C98A */
+
+    --g-900: oklch(0.18 0.014 272);
+    --g-600: oklch(0.50 0.012 272);
+    --g-400: oklch(0.66 0.010 272);
+    --g-300: oklch(0.80 0.008 272);
+    --g-200: oklch(0.90 0.006 95);
+    --g-100: oklch(0.955 0.005 95);
+
+    --line: oklch(0.88 0.006 95);
+    --line-strong: oklch(0.80 0.008 272);
+
+    --maxw: 1180px;
+    --display: 'Sora', system-ui, sans-serif;
+    --body: 'IBM Plex Sans', system-ui, sans-serif;
+    --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  ::selection{ background: var(--accent); color:#fff; }
+
+  /* ---------- layout primitives ---------- */
+  .wrap{ max-width: var(--maxw); margin: 0 auto; padding: 0 40px; }
+  section{ border-top: 1px solid var(--line); }
+  .sec-pad{ padding: 96px 0; }
+
+  .eyebrow{
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--g-600);
+    display:flex; align-items:center; gap: 14px;
+    margin: 0 0 36px;
+  }
+  .eyebrow .num{ color: var(--accent); font-weight: 600; }
+  .eyebrow .rule{ flex:1; height:1px; background: var(--line); }
+
+  h1,h2,h3,h4{ font-family: var(--display); font-weight: 600; margin:0; letter-spacing: -0.02em; }
+  .sec-title{ font-size: clamp(28px, 4vw, 40px); line-height:1.05; margin-bottom: 18px; }
+  .sec-lead{ font-size: 18px; color: var(--ink-soft); max-width: 60ch; margin: 0 0 56px; }
+  .mono-label{ font-family: var(--mono); font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color: var(--g-600); }
+
+  /* =========================================================
+     HERO
+  ========================================================= */
+  .hero{
+    border-top: none;
+    background:
+      linear-gradient(0deg, var(--paper), var(--paper)),
+      radial-gradient(circle at 1px 1px, var(--line) 1px, transparent 0);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image: radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--accent) 16%, transparent) 1px, transparent 0);
+    background-size: 28px 28px;
+    -webkit-mask-image: radial-gradient(ellipse 60% 70% at 70% 40%, #000, transparent 70%);
+            mask-image: radial-gradient(ellipse 60% 70% at 70% 40%, #000, transparent 70%);
+    opacity:.5;
+    pointer-events:none;
+  }
+  .hero-inner{ display:flex; align-items:center; gap:64px; padding: 120px 0 110px; position:relative; }
+  .hero-copy{ flex: 1.1; }
+  .hero-mark{ flex: 0 0 auto; }
+  .hero-badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family: var(--mono); font-size:12px; letter-spacing:.1em; text-transform:uppercase;
+    color: var(--ink-soft);
+    border:1px solid var(--line); border-radius:999px; padding:7px 14px; margin-bottom:28px;
+    background: color-mix(in oklab, var(--paper) 70%, transparent);
+  }
+  .hero h1{ font-size: clamp(52px, 9vw, 104px); font-weight: 700; line-height:.92; letter-spacing:-0.045em; }
+  .hero h1 .dot{ color: var(--accent); }
+  .hero-sub{ font-size: clamp(18px,2.2vw,22px); color: var(--ink-soft); margin: 26px 0 0; max-width: 30ch; line-height:1.35; }
+  .hero-meta{ display:flex; gap: 40px; margin-top: 44px; flex-wrap:wrap; }
+  .hero-meta div{ font-size: 14px; }
+  .hero-meta .k{ font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--g-600); display:block; margin-bottom:5px; }
+
+  /* =========================================================
+     LOGOMARK (SVG) — Voice Wave
+     bubble = silhouette · wave = bars inside
+  ========================================================= */
+  .vmark{ display:block; }
+  .vmark .bubble{ fill: var(--accent); }
+  .vmark .wave{ fill: #ffffff; }
+  /* reversed knockout — white mark, background reads through the wave */
+  .vmark--rev .bubble{ fill: var(--paper); }
+  .vmark--rev .wave{ fill: var(--ink); }
+  /* on iris surfaces — white bubble, iris wave */
+  .vmark--iris .bubble{ fill: #ffffff; }
+  .vmark--iris .wave{ fill: var(--accent); }
+  /* animated thinking state */
+  @keyframes vox-talk{ 0%,100%{ transform: scaleY(0.55);} 50%{ transform: scaleY(1);} }
+  .vmark--live .wave rect{ transform-box: fill-box; transform-origin: center; animation: vox-talk 1.1s ease-in-out infinite; }
+  .vmark--live .wave rect:nth-child(1){ animation-delay: 0s; }
+  .vmark--live .wave rect:nth-child(2){ animation-delay: .13s; }
+  .vmark--live .wave rect:nth-child(3){ animation-delay: .26s; }
+  .vmark--live .wave rect:nth-child(4){ animation-delay: .13s; }
+  .vmark--live .wave rect:nth-child(5){ animation-delay: 0s; }
+  @media (prefers-reduced-motion: reduce){ .vmark--live .wave rect{ animation:none; } }
+
+  /* ---- lockups ---- */
+  .lockup-h{ display:inline-flex; align-items:center; gap: 20px; }
+  .lockup-v{ display:inline-flex; flex-direction:column; align-items:center; gap: 22px; }
+  .wordmark{
+    font-family: var(--display);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .wordmark .x{ color: var(--accent); }
+
+  /* =========================================================
+     LOGO VARIANTS GRID
+  ========================================================= */
+  .grid{ display:grid; gap: 20px; }
+  .g-2{ grid-template-columns: repeat(2,1fr); }
+  .g-3{ grid-template-columns: repeat(3,1fr); }
+  .g-4{ grid-template-columns: repeat(4,1fr); }
+
+  .panel{
+    border:1px solid var(--line);
+    border-radius: 14px;
+    background: var(--paper);
+    padding: 40px;
+    display:flex; align-items:center; justify-content:center;
+    min-height: 220px;
+    position:relative;
+  }
+  .panel.dark{ background: var(--ink); border-color: transparent; }
+  .panel.dark .wordmark{ color: var(--paper); }
+  .panel.tinted{ background: var(--accent-wash); }
+  .panel .tag{
+    position:absolute; left:16px; bottom:14px;
+    font-family: var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color: var(--g-600);
+  }
+  .panel.dark .tag{ color: color-mix(in oklab, var(--paper) 55%, transparent); }
+
+  /* =========================================================
+     CONSTRUCTION / CLEARSPACE / MISUSE
+  ========================================================= */
+  .two-col{ display:grid; grid-template-columns: 1fr 1fr; gap:20px; }
+  .clearspace-box{
+    position:relative; border:1px solid var(--line); border-radius:14px; padding:54px; background:var(--paper);
+    display:flex; align-items:center; justify-content:center; min-height: 240px;
+  }
+  .cs-mark{ position:relative; }
+  .cs-ring{ position:absolute; inset:-26px; border:1px dashed var(--line-strong); border-radius:10px; }
+  .cs-note{ font-size:14px; color:var(--ink-soft); }
+  .cs-note b{ color:var(--ink); font-weight:600; }
+
+  .minsize{ display:flex; align-items:flex-end; gap:30px; flex-wrap:wrap; }
+  .minsize .item{ text-align:center; }
+  .minsize .item .mono-label{ display:block; margin-top:12px; }
+
+  .misuse{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin-top:8px; }
+  .dont{ border:1px solid var(--line); border-radius:14px; padding:30px; min-height:150px; display:flex; align-items:center; justify-content:center; position:relative; background:var(--paper); }
+  .dont .x-badge{ position:absolute; top:12px; left:12px; width:20px; height:20px; border-radius:50%; background: oklch(0.62 0.2 25); color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; z-index:2; }
+  .dont .cap{ position:absolute; bottom:-26px; left:0; right:0; text-align:center; font-size:12.5px; color:var(--ink-soft); }
+  .misuse-wrap{ padding-bottom: 18px; }
+
+  /* =========================================================
+     EXPLORATIONS
+  ========================================================= */
+  .explore-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:20px; }
+  .explore-card{ border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--paper); }
+  .explore-art{ height:200px; display:flex; align-items:center; justify-content:center; background: var(--paper-2); }
+  .explore-meta{ padding: 20px 22px; border-top:1px solid var(--line); }
+  .explore-meta h4{ font-size:16px; font-weight:600; margin-bottom:5px; }
+  .explore-meta p{ margin:0; font-size:13.5px; color:var(--ink-soft); line-height:1.45; }
+  .explore-meta .badge{ font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); }
+
+  /* =========================================================
+     COLOR
+  ========================================================= */
+  .swatches{ display:grid; grid-template-columns: repeat(4,1fr); gap:18px; }
+  .swatch{ border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--paper); }
+  .swatch .chip{ height: 130px; }
+  .swatch .meta{ padding:16px 18px; }
+  .swatch .meta .name{ font-weight:600; font-size:15px; }
+  .swatch .meta .role{ font-size:12.5px; color:var(--ink-soft); margin:2px 0 12px; }
+  .swatch .meta .val{ font-family:var(--mono); font-size:11.5px; color:var(--g-600); display:flex; justify-content:space-between; gap:8px; padding:3px 0; border-top:1px dashed var(--line); }
+  .swatch .meta .val span:first-child{ color:var(--g-400); }
+
+  .ramp{ display:flex; margin-top:30px; border-radius:12px; overflow:hidden; border:1px solid var(--line); }
+  .ramp div{ flex:1; height:64px; display:flex; align-items:flex-end; padding:8px; font-family:var(--mono); font-size:10px; }
+
+  /* =========================================================
+     TYPE
+  ========================================================= */
+  .type-row{ display:grid; grid-template-columns: 220px 1fr; gap:32px; padding: 30px 0; border-top:1px solid var(--line); align-items:baseline; }
+  .type-row:first-of-type{ border-top:none; }
+  .type-row .meta .fam{ font-family:var(--display); font-weight:600; font-size:18px; }
+  .type-row .meta .use{ font-size:13px; color:var(--ink-soft); margin-top:4px; }
+  .type-row .meta .specs{ font-family:var(--mono); font-size:11px; color:var(--g-600); margin-top:10px; letter-spacing:.04em; }
+  .specimen-display{ font-family:var(--display); }
+  .specimen-body{ font-family:var(--body); }
+  .specimen-mono{ font-family:var(--mono); }
+
+  .scale-list > div{ padding: 14px 0; border-top:1px solid var(--line); display:flex; align-items:baseline; gap:24px; }
+  .scale-list > div:first-child{ border-top:none; }
+  .scale-list .tag{ font-family:var(--mono); font-size:11px; color:var(--g-600); width:130px; flex:0 0 auto; letter-spacing:.04em; }
+
+  /* =========================================================
+     ICONOGRAPHY
+  ========================================================= */
+  .icon-grid{ display:grid; grid-template-columns: repeat(6,1fr); gap:16px; }
+  .icon-cell{ border:1px solid var(--line); border-radius:14px; aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; background:var(--paper); }
+  .icon-cell svg{ width:32px; height:32px; }
+  .icon-cell .mono-label{ font-size:10px; }
+  .ico{ fill:none; stroke: var(--ink); stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+
+  /* =========================================================
+     APPLICATIONS
+  ========================================================= */
+  .app-grid{ display:grid; grid-template-columns: repeat(12,1fr); gap:20px; }
+  .app-card{ border:1px solid var(--line); border-radius:16px; background:var(--paper); overflow:hidden; }
+  .app-card .head{ padding:16px 20px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; }
+  .app-card .head .mono-label{ font-size:11px; }
+  .app-body{ padding: 34px; display:flex; align-items:center; justify-content:center; }
+
+  /* app icon */
+  .appicon{ width:128px; height:128px; border-radius:30px; background: var(--accent); display:flex; align-items:center; justify-content:center; box-shadow: 0 18px 40px -16px color-mix(in oklab, var(--accent) 60%, black); }
+  .appicon.alt{ background: var(--ink); }
+  .appicon-row{ display:flex; gap:28px; align-items:center; }
+
+  /* business card */
+  .bizcard{ width:340px; aspect-ratio: 1.75/1; border-radius:14px; padding:26px; position:relative; box-shadow: 0 22px 50px -24px rgba(0,0,0,.4); }
+  .bizcard.front{ background: var(--ink); color: var(--paper); display:flex; flex-direction:column; justify-content:space-between; }
+  .bizcard.back{ background: var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; }
+  .bizcard .nm{ font-family:var(--display); font-weight:600; font-size:16px; }
+  .bizcard .rl{ font-size:12px; opacity:.7; margin-top:2px; }
+  .bizcard .contact{ font-family:var(--mono); font-size:10.5px; letter-spacing:.04em; opacity:.7; line-height:1.7; }
+  .card-stack{ display:flex; gap:26px; flex-wrap:wrap; justify-content:center; }
+
+  /* chat widget */
+  .chat{ width:360px; border:1px solid var(--line); border-radius:20px; overflow:hidden; background:var(--paper); box-shadow: 0 28px 60px -26px rgba(20,20,30,.35); }
+  .chat-head{ background: var(--ink); color:var(--paper); padding:16px 18px; display:flex; align-items:center; gap:12px; }
+  .chat-avatar{ width:38px; height:38px; border-radius:11px; background: var(--accent); display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
+  .chat-head .who{ font-family:var(--display); font-weight:600; font-size:15px; line-height:1.1; }
+  .chat-head .status{ font-size:11.5px; opacity:.7; display:flex; align-items:center; gap:6px; margin-top:3px; }
+  .dot-live{ width:7px; height:7px; border-radius:50%; background:var(--live); box-shadow:0 0 0 3px color-mix(in oklab, var(--live) 35%, transparent); }
+  .chat-body{ padding:20px 18px; display:flex; flex-direction:column; gap:12px; background: var(--paper-2); }
+  .bubble{ max-width:78%; padding:11px 14px; font-size:13.5px; line-height:1.4; border-radius:16px; }
+  .bubble.bot{ background:var(--paper); border:1px solid var(--line); align-self:flex-start; border-bottom-left-radius:5px; }
+  .bubble.user{ background: var(--accent); color:#fff; align-self:flex-end; border-bottom-right-radius:5px; }
+  .chat-input{ display:flex; align-items:center; gap:10px; padding:14px 16px; border-top:1px solid var(--line); background:var(--paper); }
+  .chat-input .field{ flex:1; font-size:13px; color:var(--g-400); }
+  .chat-send{ width:34px; height:34px; border-radius:10px; background:var(--accent); display:flex; align-items:center; justify-content:center; }
+
+  /* agent avatars */
+  .avatar-row{ display:flex; gap:22px; align-items:center; flex-wrap:wrap; }
+  .vavatar{ width:64px; height:64px; border-radius:50%; display:flex; align-items:center; justify-content:center; position:relative; }
+  .vavatar.ink{ background:var(--ink); }
+  .vavatar.iris{ background:var(--accent); }
+  .vavatar.wash{ background:var(--accent-wash); }
+  .vavatar .live-ring{ position:absolute; right:0; bottom:2px; width:14px; height:14px; border-radius:50%; background:var(--live); border:3px solid var(--paper); }
+
+  /* footer */
+  .foot{ padding: 60px 0 80px; color:var(--g-600); font-family:var(--mono); font-size:12px; letter-spacing:.06em; display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px; }
+
+  @media (max-width: 920px){
+    .hero-inner{ flex-direction:column-reverse; align-items:flex-start; gap:48px; }
+    .g-4{ grid-template-columns: repeat(2,1fr); }
+    .g-3,.explore-grid,.swatches{ grid-template-columns: repeat(2,1fr); }
+    .icon-grid{ grid-template-columns: repeat(3,1fr); }
+    .two-col{ grid-template-columns:1fr; }
+    .type-row{ grid-template-columns:1fr; gap:14px; }
+    .misuse{ grid-template-columns: repeat(2,1fr); }
+    .app-grid{ grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px){
+    .wrap{ padding:0 22px; }
+    .g-4,.g-3,.explore-grid,.swatches,.icon-grid,.misuse{ grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================ HERO ============================ -->
+<section class="hero" data-screen-label="Hero">
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <span class="hero-badge"><span class="dot-live"></span> Brand Kit · v1.1</span>
+        <h1>Voxelo<span class="dot">.</span></h1>
+        <p class="hero-sub">AI agents that handle every customer conversation — built to drop into any industry.</p>
+        <div class="hero-meta">
+          <div><span class="k">Sector</span>Conversational AI · CX</div>
+          <div><span class="k">Tone</span>Premium · Bold · Trusted</div>
+          <div><span class="k">Built</span>May 2026</div>
+        </div>
+      </div>
+      <div class="hero-mark">
+        <!-- Primary Voice Wave mark, large, live -->
+        <svg class="vmark vmark--live" width="240" height="240" viewBox="0 0 100 100" aria-label="Voxelo logomark">
+          <rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/>
+          <path class="bubble" d="M30 58 L26 82 L52 62 Z"/>
+          <g class="wave">
+            <rect x="29.5" y="36" width="5" height="12" rx="2.5"/>
+            <rect x="38.5" y="31" width="5" height="22" rx="2.5"/>
+            <rect x="47.5" y="26" width="5" height="32" rx="2.5"/>
+            <rect x="56.5" y="31" width="5" height="22" rx="2.5"/>
+            <rect x="65.5" y="36" width="5" height="12" rx="2.5"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 01 LOGO ============================ -->
+<section class="sec-pad" data-screen-label="Logo">
+  <div class="wrap">
+    <p class="eyebrow"><span class="num">01</span> Logo <span class="rule"></span> Lockups &amp; variants</p>
+    <h2 class="sec-title">The Voice Wave</h2>
+    <p class="sec-lead">A speech bubble cradling a live voice waveform. It draws on the name's root — <em>vox</em>, Latin for voice — and on what Voxelo does: listening and replying across chat, voice, and email. The bars animate when an agent is thinking. The wordmark is set in Sora with a tightened track; the accent dot signals "live."</p>
+
+    <div class="grid g-2" style="margin-bottom:20px;">
+      <div class="panel" style="min-height:300px;">
+        <div class="lockup-v">
+          <svg class="vmark" width="116" height="116" viewBox="0 0 100 100">
+            <rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/>
+            <path class="bubble" d="M30 58 L26 82 L52 62 Z"/>
+            <g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g>
+          </svg>
+          <span class="wordmark" style="font-size:34px;">V<span class="x">o</span>xelo</span>
+        </div>
+        <span class="tag">Primary · stacked</span>
+      </div>
+      <div class="panel dark" style="min-height:300px;">
+        <div class="lockup-v">
+          <svg class="vmark vmark--rev" width="116" height="116" viewBox="0 0 100 100">
+            <rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/>
+            <path class="bubble" d="M30 58 L26 82 L52 62 Z"/>
+            <g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g>
+          </svg>
+          <span class="wordmark" style="font-size:34px;">Voxelo</span>
+        </div>
+        <span class="tag">Reversed · knockout</span>
+      </div>
+    </div>
+
+    <div class="grid g-3">
+      <div class="panel">
+        <div class="lockup-h">
+          <svg class="vmark" width="58" height="58" viewBox="0 0 100 100">
+            <rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/>
+            <path class="bubble" d="M30 58 L26 82 L52 62 Z"/>
+            <g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g>
+          </svg>
+          <span class="wordmark" style="font-size:30px;">V<span class="x">o</span>xelo</span>
+        </div>
+        <span class="tag">Horizontal</span>
+      </div>
+      <div class="panel tinted">
+        <span class="wordmark" style="font-size:30px;">V<span class="x">o</span>xelo</span>
+        <span class="tag">Wordmark only</span>
+      </div>
+      <div class="panel">
+        <svg class="vmark" width="74" height="74" viewBox="0 0 100 100">
+          <rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/>
+          <path class="bubble" d="M30 58 L26 82 L52 62 Z"/>
+          <g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g>
+        </svg>
+        <span class="tag">Symbol only</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 02 CONSTRUCTION ============================ -->
+<section class="sec-pad" data-screen-label="Construction">
+  <div class="wrap">
+    <p class="eyebrow"><span class="num">02</span> Construction <span class="rule"></span> Clear space, sizing &amp; misuse</p>
+    <h2 class="sec-title">Give it room</h2>
+    <p class="sec-lead">Protect the mark with clear space equal to half the bubble's height on every side. Keep the five waveform bars symmetric and evenly spaced — never crowd, recolor outside the palette, or distort the geometry.</p>
+
+    <div class="two-col" style="margin-bottom:20px;">
+      <div class="clearspace-box">
+        <div class="cs-mark">
+          <div class="cs-ring"></div>
+          <svg class="vmark" width="96" height="96" viewBox="0 0 100 100">
+            <rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/>
+            <path class="bubble" d="M30 58 L26 82 L52 62 Z"/>
+            <g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g>
+          </svg>
+        </div>
+      </div>
+      <div class="panel" style="flex-direction:column; align-items:flex-start; gap:34px;">
+        <div>
+          <p class="mono-label" style="margin-bottom:18px;">Minimum sizes</p>
+          <div class="minsize">
+            <div class="item">
+              <svg class="vmark" width="56" height="56" viewBox="0 0 100 100"><rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/><path class="bubble" d="M30 58 L26 82 L52 62 Z"/><g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g></svg>
+              <span class="mono-label">Symbol · 24px</span>
+            </div>
+            <div class="item">
+              <div class="lockup-h" style="gap:9px;">
+                <svg class="vmark" width="26" height="26" viewBox="0 0 100 100"><rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/><path class="bubble" d="M30 58 L26 82 L52 62 Z"/><g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g></svg>
+                <span class="wordmark" style="font-size:15px;">V<span class="x">o</span>xelo</span>
+              </div>
+              <span class="mono-label">Lockup · 96px wide</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="misuse-wrap">
+      <p class="mono-label" style="margin:8px 0 24px;">Don'ts</p>
+      <div class="misuse">
+        <div class="dont">
+          <span class="x-badge">×</span>
+          <svg class="vmark" width="56" height="56" viewBox="0 0 100 100" style="filter:hue-rotate(120deg) saturate(1.5)"><rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/><path class="bubble" d="M30 58 L26 82 L52 62 Z"/><g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g></svg>
+          <span class="cap">Off-palette colors</span>
+        </div>
+        <div class="dont">
+          <span class="x-badge">×</span>
+          <svg class="vmark" width="84" height="48" viewBox="0 0 100 100" preserveAspectRatio="none"><rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/><path class="bubble" d="M30 58 L26 82 L52 62 Z"/><g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g></svg>
+          <span class="cap">Stretch / distort</span>
+        </div>
+        <div class="dont">
+          <span class="x-badge">×</span>
+          <svg class="vmark" width="56" height="56" viewBox="0 0 100 100" style="transform:rotate(20deg)"><rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/><path class="bubble" d="M30 58 L26 82 L52 62 Z"/><g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g></svg>
+          <span class="cap">Rotate</span>
+        </div>
+        <div class="dont">
+          <span class="x-badge">×</span>
+          <div style="background:linear-gradient(45deg,#f0a,#0af); padding:12px; border-radius:8px; display:flex;">
+            <svg class="vmark vmark--iris" width="44" height="44" viewBox="0 0 100 100"><rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/><path class="bubble" d="M30 58 L26 82 L52 62 Z"/><g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g></svg>
+          </div>
+          <span class="cap">Busy backgrounds</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 03 EXPLORATIONS ============================ -->
+<section class="sec-pad" data-screen-label="Explorations">
+  <div class="wrap">
+    <p class="eyebrow"><span class="num">03</span> Explorations <span class="rule"></span> Alternate mark directions</p>
+    <h2 class="sec-title">Routes we considered</h2>
+    <p class="sec-lead">The Voice Wave won for its direct tie to the name's root, <em>vox</em>, and because it animates so naturally. These directions were strong contenders — kept on file for sub-brands, motion, and future product marks.</p>
+
+    <div class="explore-grid">
+      <div class="explore-card">
+        <div class="explore-art">
+          <!-- V-in-bubble -->
+          <svg width="120" height="120" viewBox="0 0 100 100">
+            <rect x="14" y="16" width="72" height="52" rx="18" fill="var(--accent)"/>
+            <path d="M30 58 L26 82 L52 62 Z" fill="var(--accent)"/>
+            <path d="M35 31 L50 58 L65 31" fill="none" stroke="#fff" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="explore-meta">
+          <span class="badge">Route A</span>
+          <h4>The Vox Bubble</h4>
+          <p>A speech bubble with the brand's V cut into it. Cleanest monogram tie-in — held as the alternate icon.</p>
+        </div>
+      </div>
+
+      <div class="explore-card">
+        <div class="explore-art">
+          <!-- Voxel cube -->
+          <svg width="116" height="116" viewBox="0 0 100 100">
+            <polygon points="50,16 78,32 50,48 22,32" fill="var(--accent-light)"/>
+            <polygon points="22,32 50,48 50,80 22,64" fill="var(--accent)"/>
+            <polygon points="78,32 50,48 50,80 78,64" fill="var(--accent-dark)"/>
+          </svg>
+        </div>
+        <div class="explore-meta">
+          <span class="badge">Route B</span>
+          <h4>Voxel cube</h4>
+          <p>An isometric building block — modular AI for any industry. Distinct, but abstract: it asks you to decode the name first.</p>
+        </div>
+      </div>
+
+      <div class="explore-card">
+        <div class="explore-art">
+          <!-- Dialogue -->
+          <svg width="120" height="120" viewBox="0 0 100 100">
+            <g fill="var(--accent-light)"><rect x="40" y="40" width="46" height="34" rx="13"/><path d="M70 70 L74 88 L56 72 Z"/></g>
+            <g fill="var(--accent)"><rect x="14" y="20" width="46" height="34" rx="13"/><path d="M30 50 L26 68 L44 52 Z"/></g>
+          </svg>
+        </div>
+        <div class="explore-meta">
+          <span class="badge">Route C</span>
+          <h4>Dialogue</h4>
+          <p>Two interlocking bubbles — customer and agent in sync. Warm and human, but a touch less ownable.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 04 COLOR ============================ -->
+<section class="sec-pad" data-screen-label="Color">
+  <div class="wrap">
+    <p class="eyebrow"><span class="num">04</span> Color <span class="rule"></span> Palette &amp; usage</p>
+    <h2 class="sec-title">Ink, paper, one bold signal</h2>
+    <p class="sec-lead">Restraint reads premium: near-black and warm paper carry 90% of every surface. Electric Iris is the single hero — reserved for the mark, primary actions, and the moments that matter. Live Green is for status only.</p>
+
+    <div class="swatches">
+      <div class="swatch">
+        <div class="chip" style="background:var(--accent)"></div>
+        <div class="meta">
+          <div class="name">Electric Iris</div>
+          <div class="role">Hero · CTAs · the mark</div>
+          <div class="val"><span>HEX</span><span>#4B45E6</span></div>
+          <div class="val"><span>OKLCH</span><span>0.55 0.215 272</span></div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:var(--ink)"></div>
+        <div class="meta">
+          <div class="name">Ink</div>
+          <div class="role">Text · dark surfaces</div>
+          <div class="val"><span>HEX</span><span>#15161D</span></div>
+          <div class="val"><span>OKLCH</span><span>0.18 0.014 272</span></div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:var(--paper); border-bottom:1px solid var(--line)"></div>
+        <div class="meta">
+          <div class="name">Paper</div>
+          <div class="role">Primary background</div>
+          <div class="val"><span>HEX</span><span>#FBFAF6</span></div>
+          <div class="val"><span>OKLCH</span><span>0.985 0.004 95</span></div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:var(--live)"></div>
+        <div class="meta">
+          <div class="name">Live Green</div>
+          <div class="role">Status &amp; "agent online"</div>
+          <div class="val"><span>HEX</span><span>#36C98A</span></div>
+          <div class="val"><span>OKLCH</span><span>0.74 0.17 150</span></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="mono-label" style="margin:40px 0 0;">Neutral ramp</p>
+    <div class="ramp">
+      <div style="background:var(--ink); color:#fff">900</div>
+      <div style="background:var(--g-600); color:#fff">600</div>
+      <div style="background:var(--g-400); color:#fff">400</div>
+      <div style="background:var(--g-300); color:var(--ink)">300</div>
+      <div style="background:var(--g-200); color:var(--ink)">200</div>
+      <div style="background:var(--g-100); color:var(--ink)">100</div>
+      <div style="background:var(--paper); color:var(--ink)">Paper</div>
+    </div>
+    <p class="mono-label" style="margin:30px 0 0;">Accent tints</p>
+    <div class="ramp" style="margin-top:14px;">
+      <div style="background:var(--accent-light); color:#fff">Tint · gradients &amp; hovers</div>
+      <div style="background:var(--accent); color:#fff">Iris · primary</div>
+      <div style="background:var(--accent-dark); color:#fff">Deep · pressed &amp; depth</div>
+      <div style="background:var(--accent-wash); color:var(--accent-dark)">Wash · tinted surfaces</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 05 TYPE ============================ -->
+<section class="sec-pad" data-screen-label="Typography">
+  <div class="wrap">
+    <p class="eyebrow"><span class="num">05</span> Typography <span class="rule"></span> Type system</p>
+    <h2 class="sec-title">Geometric meets neutral</h2>
+    <p class="sec-lead">Sora gives the brand a confident, modern voice for display and the wordmark. IBM Plex Sans keeps body copy neutral and enterprise-credible. IBM Plex Mono handles labels, code, and the technical texture.</p>
+
+    <div class="type-row">
+      <div class="meta">
+        <div class="fam">Sora</div>
+        <div class="use">Display · headlines · wordmark</div>
+        <div class="specs">400 / 500 / 600 / 700 / 800 · tracking −2 to −4.5%</div>
+      </div>
+      <div>
+        <div class="specimen-display" style="font-size:54px; font-weight:700; letter-spacing:-0.04em; line-height:1;">Conversations,<br/>handled.</div>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="meta">
+        <div class="fam">IBM Plex Sans</div>
+        <div class="use">Body · UI · long-form</div>
+        <div class="specs">400 / 500 / 600 / 700 · tracking 0</div>
+      </div>
+      <div>
+        <div class="specimen-body" style="font-size:18px; line-height:1.55; max-width:54ch; color:var(--ink-soft);">Voxelo deploys AI agents that resolve customer questions across chat, voice, and email — trained on your knowledge base, fluent in your tone, and escalating to humans the moment it matters.</div>
+      </div>
+    </div>
+
+    <div class="type-row">
+      <div class="meta">
+        <div class="fam">IBM Plex Mono</div>
+        <div class="use">Labels · metadata · code</div>
+        <div class="specs">400 / 500 / 600 · tracking +4 to +14%</div>
+      </div>
+      <div>
+        <div class="specimen-mono" style="font-size:14px; letter-spacing:.08em; color:var(--g-600); line-height:2;">RESOLUTION&nbsp;RATE&nbsp;·&nbsp;94.2%<br/>AVG&nbsp;HANDLE&nbsp;TIME&nbsp;·&nbsp;0:41<br/>STATUS&nbsp;·&nbsp;<span style="color:var(--live)">●</span>&nbsp;LIVE</div>
+      </div>
+    </div>
+
+    <p class="mono-label" style="margin:54px 0 18px;">Type scale</p>
+    <div class="scale-list">
+      <div><span class="tag">Display / 64</span><span class="specimen-display" style="font-size:64px; font-weight:700; letter-spacing:-.045em; line-height:1;">Aa</span></div>
+      <div><span class="tag">H1 / 40</span><span class="specimen-display" style="font-size:40px; font-weight:600; letter-spacing:-.03em;">Every conversation, handled</span></div>
+      <div><span class="tag">H2 / 28</span><span class="specimen-display" style="font-size:28px; font-weight:600; letter-spacing:-.02em;">AI agents for every industry</span></div>
+      <div><span class="tag">Body / 18</span><span class="specimen-body" style="font-size:18px;">Deploy in days, not quarters.</span></div>
+      <div><span class="tag">Small / 14</span><span class="specimen-body" style="font-size:14px; color:var(--ink-soft);">Trained on your knowledge base.</span></div>
+      <div><span class="tag">Label / 12 mono</span><span class="specimen-mono" style="font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--g-600);">Powered by Voxelo</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 06 ICONOGRAPHY ============================ -->
+<section class="sec-pad" data-screen-label="Iconography">
+  <div class="wrap">
+    <p class="eyebrow"><span class="num">06</span> Iconography <span class="rule"></span> System icons</p>
+    <h2 class="sec-title">Light, geometric, 1.7px</h2>
+    <p class="sec-lead">Icons share the mark's geometric logic: a 24px grid, 1.7px strokes, round joins and caps, no fills. Calm and consistent — they recede so content leads.</p>
+
+    <div class="icon-grid">
+      <div class="icon-cell">
+        <svg viewBox="0 0 24 24"><path class="ico" d="M5 6h14a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H10l-4 3v-3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/></svg>
+        <span class="mono-label">Chat</span>
+      </div>
+      <div class="icon-cell">
+        <svg viewBox="0 0 24 24"><rect class="ico" x="9" y="4" width="6" height="11" rx="3"/><path class="ico" d="M5 11a7 7 0 0 0 14 0M12 18v2"/></svg>
+        <span class="mono-label">Voice</span>
+      </div>
+      <div class="icon-cell">
+        <svg viewBox="0 0 24 24"><path class="ico" d="M4 6h16v12H4z"/><path class="ico" d="m4 7 8 6 8-6"/></svg>
+        <span class="mono-label">Email</span>
+      </div>
+      <div class="icon-cell">
+        <svg viewBox="0 0 24 24"><circle class="ico" cx="12" cy="8" r="3.2"/><path class="ico" d="M5 20a7 7 0 0 1 14 0"/></svg>
+        <span class="mono-label">Handoff</span>
+      </div>
+      <div class="icon-cell">
+        <svg viewBox="0 0 24 24"><path class="ico" d="m4 13 4 4 12-12"/></svg>
+        <span class="mono-label">Resolved</span>
+      </div>
+      <div class="icon-cell">
+        <svg viewBox="0 0 24 24"><path class="ico" d="M12 3l8 4v5c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V7z"/></svg>
+        <span class="mono-label">Secure</span>
+      </div>
+      <div class="icon-cell">
+        <svg viewBox="0 0 24 24"><path class="ico" d="M4 18V9m5 9V5m5 13v-6m5 6V8"/></svg>
+        <span class="mono-label">Analytics</span>
+      </div>
+      <div class="icon-cell">
+        <svg viewBox="0 0 24 24"><path class="ico" d="M12 4v3m0 10v3m8-8h-3M7 12H4m13.5-5.5-2 2m-7 7-2 2m11 0-2-2m-7-7-2-2"/><circle class="ico" cx="12" cy="12" r="3"/></svg>
+        <span class="mono-label">Automate</span>
+      </div>
+      <div class="icon-cell">
+        <svg viewBox="0 0 24 24"><path class="ico" d="M3 12a9 9 0 0 1 18 0 9 9 0 0 1-18 0z"/><path class="ico" d="M3 12h18M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18z"/></svg>
+        <span class="mono-label">Global</span>
+      </div>
+      <div class="icon-cell">
+        <svg viewBox="0 0 24 24"><path class="ico" d="m13 2-9 11h7l-1 9 9-11h-7z"/></svg>
+        <span class="mono-label">Instant</span>
+      </div>
+      <div class="icon-cell">
+        <svg viewBox="0 0 24 24"><circle class="ico" cx="12" cy="12" r="8"/><path class="ico" d="M12 8v4l3 2"/></svg>
+        <span class="mono-label">24/7</span>
+      </div>
+      <div class="icon-cell">
+        <svg viewBox="0 0 24 24"><rect class="ico" x="4" y="4" width="7" height="7" rx="1.5"/><rect class="ico" x="13" y="4" width="7" height="7" rx="1.5"/><rect class="ico" x="4" y="13" width="7" height="7" rx="1.5"/><rect class="ico" x="13" y="13" width="7" height="7" rx="1.5"/></svg>
+        <span class="mono-label">Integrate</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 07 APPLICATIONS ============================ -->
+<section class="sec-pad" data-screen-label="Applications">
+  <div class="wrap">
+    <p class="eyebrow"><span class="num">07</span> Applications <span class="rule"></span> The brand in use</p>
+    <h2 class="sec-title">Out in the world</h2>
+    <p class="sec-lead">Where the system meets the product: the app icon, stationery, the in-product chat widget, and the agent avatars customers actually see.</p>
+
+    <div class="app-grid">
+      <!-- App icon -->
+      <div class="app-card" style="grid-column: span 5;">
+        <div class="head"><span class="mono-label">App icon</span><span class="mono-label">iOS · 1024²</span></div>
+        <div class="app-body" style="gap:0;">
+          <div class="appicon-row">
+            <div class="appicon">
+              <svg class="vmark vmark--iris" width="74" height="74" viewBox="0 0 100 100">
+                <rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/>
+                <path class="bubble" d="M30 58 L26 82 L52 62 Z"/>
+                <g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g>
+              </svg>
+            </div>
+            <div class="appicon alt">
+              <svg class="vmark" width="74" height="74" viewBox="0 0 100 100">
+                <rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/>
+                <path class="bubble" d="M30 58 L26 82 L52 62 Z"/>
+                <g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Agent avatars -->
+      <div class="app-card" style="grid-column: span 7;">
+        <div class="head"><span class="mono-label">Agent avatars</span><span class="mono-label">In-product</span></div>
+        <div class="app-body">
+          <div class="avatar-row">
+            <div class="vavatar iris">
+              <svg class="vmark vmark--iris" width="36" height="36" viewBox="0 0 100 100"><rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/><path class="bubble" d="M30 58 L26 82 L52 62 Z"/><g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g></svg>
+              <span class="live-ring"></span>
+            </div>
+            <div class="vavatar ink">
+              <svg class="vmark" width="36" height="36" viewBox="0 0 100 100"><rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/><path class="bubble" d="M30 58 L26 82 L52 62 Z"/><g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g></svg>
+              <span class="live-ring"></span>
+            </div>
+            <div class="vavatar wash">
+              <svg class="vmark" width="36" height="36" viewBox="0 0 100 100"><rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/><path class="bubble" d="M30 58 L26 82 L52 62 Z"/><g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g></svg>
+            </div>
+            <div style="font-size:14px; color:var(--ink-soft); max-width:22ch; line-height:1.4;">A friendly, named agent face — with a live-status ring when online.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Business cards -->
+      <div class="app-card" style="grid-column: span 7;">
+        <div class="head"><span class="mono-label">Stationery</span><span class="mono-label">Business card · 3.5 × 2"</span></div>
+        <div class="app-body" style="background:var(--paper-2);">
+          <div class="card-stack">
+            <div class="bizcard front">
+              <div class="lockup-h" style="gap:11px;">
+                <svg class="vmark vmark--rev" width="32" height="32" viewBox="0 0 100 100"><rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/><path class="bubble" d="M30 58 L26 82 L52 62 Z"/><g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g></svg>
+                <span class="wordmark" style="font-size:19px; color:var(--paper)">Voxelo</span>
+              </div>
+              <div>
+                <div class="nm">Mara Velasquez</div>
+                <div class="rl">Head of Customer AI</div>
+              </div>
+              <div class="contact"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8ee3effcefcef8e1f6ebe2e1a0efe7">[email&#160;protected]</a> · +1 415 555 0148<br/>voxelo.ai</div>
+            </div>
+            <div class="bizcard back">
+              <svg class="vmark vmark--iris" width="58" height="58" viewBox="0 0 100 100"><rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/><path class="bubble" d="M30 58 L26 82 L52 62 Z"/><g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat widget -->
+      <div class="app-card" style="grid-column: span 5;">
+        <div class="head"><span class="mono-label">Product · chat widget</span><span class="mono-label">Web SDK</span></div>
+        <div class="app-body" style="background:var(--paper-2);">
+          <div class="chat">
+            <div class="chat-head">
+              <div class="chat-avatar">
+                <svg class="vmark vmark--iris vmark--live" width="24" height="24" viewBox="0 0 100 100"><rect class="bubble" x="14" y="16" width="72" height="52" rx="18"/><path class="bubble" d="M30 58 L26 82 L52 62 Z"/><g class="wave"><rect x="29.5" y="36" width="5" height="12" rx="2.5"/><rect x="38.5" y="31" width="5" height="22" rx="2.5"/><rect x="47.5" y="26" width="5" height="32" rx="2.5"/><rect x="56.5" y="31" width="5" height="22" rx="2.5"/><rect x="65.5" y="36" width="5" height="12" rx="2.5"/></g></svg>
+              </div>
+              <div>
+                <div class="who">Vox</div>
+                <div class="status"><span class="dot-live"></span> AI agent · online</div>
+              </div>
+            </div>
+            <div class="chat-body">
+              <div class="bubble bot">Hi! I'm Vox, your Voxelo assistant. How can I help today?</div>
+              <div class="bubble user">I need to change my delivery address.</div>
+              <div class="bubble bot">Done — I've updated it to 24 Harbor St. Anything else?</div>
+            </div>
+            <div class="chat-input">
+              <div class="field">Type a message…</div>
+              <div class="chat-send">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<section>
+  <div class="wrap">
+    <div class="foot">
+      <span>VOXELO™ · BRAND KIT v1.1</span>
+      <span>SORA · IBM PLEX · ELECTRIC IRIS #4B45E6</span>
+      <span>© 2026 VOXELO</span>
+    </div>
+  </div>
+</section>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#15161D"/><rect x="22" y="26" width="56" height="40" rx="13" fill="#4B45E6"/><path d="M34 60 L31 78 L52 64 Z" fill="#4B45E6"/><g fill="#fff"><rect x="35.5" y="40" width="4" height="10" rx="2"/><rect x="42.5" y="36" width="4" height="18" rx="2"/><rect x="49" y="32" width="4" height="26" rx="2"/><rect x="55.5" y="36" width="4" height="18" rx="2"/><rect x="62.5" y="40" width="4" height="10" rx="2"/></g></svg>
+</template>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+</html>

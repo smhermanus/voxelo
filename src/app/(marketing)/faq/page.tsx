@@ -1,17 +1,8 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { Download, ArrowLeft, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
-  title: "FAQ — AI Receptionist",
+  title: "FAQ — Voxelo",
   description:
     "Frequently asked questions about the Voxelo AI receptionist — setup, pricing, security, and how it works.",
 };
@@ -21,7 +12,7 @@ const sections = [
     id: "getting-started",
     title: "Getting Started",
     badge: "Setup",
-    badgeColor: "bg-blue-100 text-blue-700",
+    chipClass: "chip-setup",
     items: [
       {
         q: "How does the setup process work?",
@@ -49,7 +40,7 @@ const sections = [
     id: "how-it-works",
     title: "How It Works",
     badge: "Capability",
-    badgeColor: "bg-purple-100 text-purple-700",
+    chipClass: "chip-capability",
     items: [
       {
         q: "What can the AI receptionist actually do?",
@@ -77,7 +68,7 @@ const sections = [
     id: "pricing",
     title: "Pricing & Plans",
     badge: "Pricing",
-    badgeColor: "bg-green-100 text-green-700",
+    chipClass: "chip-pricing",
     items: [
       {
         q: "How much does it cost?",
@@ -101,7 +92,7 @@ const sections = [
     id: "data-security",
     title: "Your Data & Security",
     badge: "Security",
-    badgeColor: "bg-orange-100 text-orange-700",
+    chipClass: "chip-security",
     items: [
       {
         q: "Is my data safe and POPIA compliant?",
@@ -125,7 +116,7 @@ const sections = [
     id: "reliability",
     title: "Reliability",
     badge: "Uptime",
-    badgeColor: "bg-teal-100 text-teal-700",
+    chipClass: "chip-uptime",
     items: [
       {
         q: "What happens during load-shedding?",
@@ -143,93 +134,83 @@ const sections = [
   },
 ];
 
-export default function ClientFaqPage() {
+export default function FaqPage() {
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
-      {/* Back link */}
-      <Link
-        href="/home"
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground mb-8 transition-colors"
-      >
-        <ArrowLeft className="size-4" /> Back to home
-      </Link>
+    <>
+      {/* ── Hero ── */}
+      <div className="faq-hero">
+        <div className="wrap">
+          <Link
+            href="/home"
+            style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 14, color: "var(--ink-soft)", marginBottom: 24, textDecoration: "none" }}
+          >
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+            Back to home
+          </Link>
 
-      {/* Header */}
-      <div className="mb-10">
-        <Badge variant="secondary" className="mb-3">FAQ</Badge>
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">Frequently Asked Questions</h1>
-        <p className="mt-3 text-lg text-muted-foreground">
-          AI Receptionist — Your 24/7 Virtual Front Desk
-        </p>
-        <p className="mt-2 text-muted-foreground">
-          Everything you need to know about getting your AI receptionist up and running.
-        </p>
-        <div className="mt-4">
-          <Button asChild variant="outline" size="sm">
-            <a href="/documents/FAQ-Client-Facing.pdf" download>
-              <Download className="mr-2 size-4" /> Download PDF
-            </a>
-          </Button>
+          <p className="eyebrow">FAQ</p>
+          <h1>Frequently Asked Questions</h1>
+          <p>Everything you need to know about getting your AI receptionist up and running.</p>
+
+          <a href="/documents/FAQ-Client-Facing.pdf" download className="faq-dl-btn">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3v13M5 16l7 7 7-7" />
+              <path d="M4 20h16" />
+            </svg>
+            Download PDF
+          </a>
         </div>
       </div>
 
-      {/* Quick nav */}
-      <div className="mb-10 flex flex-wrap gap-2">
-        {sections.map((s) => (
-          <a
-            key={s.id}
-            href={`#${s.id}`}
-            className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium transition-opacity hover:opacity-80 ${s.badgeColor}`}
-          >
-            {s.title}
-          </a>
-        ))}
-      </div>
+      <div className="wrap" style={{ paddingBottom: 100 }}>
+        {/* Quick nav chips */}
+        <nav className="faq-chips" aria-label="Jump to section">
+          {sections.map((s) => (
+            <a key={s.id} href={`#${s.id}`} className={`faq-chip ${s.chipClass}`}>
+              {s.title}
+            </a>
+          ))}
+        </nav>
 
-      {/* Sections */}
-      <div className="space-y-12">
+        {/* Sections */}
         {sections.map((section) => (
-          <div key={section.id} id={section.id} className="scroll-mt-24">
-            <div className="flex items-center gap-3 mb-4">
-              <h2 className="text-xl font-semibold">{section.title}</h2>
-              <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${section.badgeColor}`}>
+          <div key={section.id} id={section.id} className="faq-section">
+            <div className="faq-sec-head">
+              <h2>{section.title}</h2>
+              <span className={`faq-chip ${section.chipClass}`} style={{ fontSize: 12, padding: "4px 12px" }}>
                 {section.badge}
               </span>
             </div>
-            <Accordion type="single" collapsible className="border rounded-xl overflow-hidden divide-y">
+            <div className="faq-items">
               {section.items.map((item, i) => (
-                <AccordionItem key={i} value={`${section.id}-${i}`} className="border-0 px-5">
-                  <AccordionTrigger className="text-sm font-medium text-left py-4 hover:no-underline">
-                    {item.q}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-sm text-muted-foreground leading-relaxed pb-4">
-                    {item.a}
-                  </AccordionContent>
-                </AccordionItem>
+                <details key={i}>
+                  <summary>{item.q}</summary>
+                  <div className="faq-body">{item.a}</div>
+                </details>
               ))}
-            </Accordion>
+            </div>
           </div>
         ))}
-      </div>
 
-      {/* Still have questions */}
-      <div className="mt-16 rounded-2xl bg-blue-600 text-white p-8 text-center">
-        <h2 className="text-xl font-semibold">Still have questions?</h2>
-        <p className="mt-2 text-blue-100 text-sm">
-          We&apos;re happy to help. Get in touch and we&apos;ll walk you through how an AI receptionist
-          could work for your business.
-        </p>
-        <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
-          <Button asChild variant="secondary">
-            <Link href="mailto:info@voxelo.co.za">Get in touch</Link>
-          </Button>
-          <Button asChild variant="outline" className="border-white text-white hover:bg-white/10 hover:text-white">
-            <Link href="/sign-up">
-              Start free trial <ArrowRight className="ml-2 size-4" />
+        {/* CTA */}
+        <div className="faq-cta">
+          <h2>Still have questions?</h2>
+          <p>
+            We&apos;re happy to help. Get in touch and we&apos;ll walk you through how Voxelo
+            could work for your business.
+          </p>
+          <div className="faq-cta-btns">
+            <a href="mailto:info@voxelo.co.za" className="btn btn-lg btn-onwhite">
+              Get in touch
+            </a>
+            <Link href="/sign-up" className="btn btn-lg btn-outwhite">
+              Start free trial
             </Link>
-          </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -1,41 +1,94 @@
 import Link from "next/link";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import "./landing.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/app/(marketing)/components/theme-toggle";
+import { VoiceWave } from "@/app/(marketing)/components/voice-wave";
+import { VoxFab } from "@/app/(marketing)/components/vox-fab";
+import { BookDemoModal } from "@/app/(marketing)/components/book-demo-modal";
+import { NavBookDemo } from "@/app/(marketing)/components/nav-book-demo";
+import { NavSignIn } from "@/app/(marketing)/components/nav-sign-in";
+import { SignInModal } from "@/app/(marketing)/components/sign-in-modal";
 
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
-      <div className="min-h-screen flex flex-col bg-white dark:bg-[#050816]">
-        <header className="sticky top-0 z-50 border-b border-slate-200 dark:border-white/8 bg-white/90 dark:bg-[#050816]/80 backdrop-blur-md">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-            <Link href="/home" className="flex items-center gap-2">
-              <Image src="/logo.svg" alt="Voxelo" width={28} height={28} className="rounded-sm" />
-              <span className="font-semibold text-lg tracking-tighter text-slate-900 dark:text-white">Voxelo</span>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+      <div className="vox-page">
+        {/* ── Sticky nav ── */}
+        <nav className="vox-nav" id="nav">
+          <div className="wrap nav-inner">
+            <Link href="/home" className="brand" aria-label="Voxelo home">
+              <VoiceWave size={34} />
+              <span className="wm">
+                V<span className="x">o</span>xelo
+              </span>
             </Link>
-            <nav className="flex items-center gap-3 sm:gap-5">
-              <Link href="/faq" className="text-sm text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors">
-                FAQ
-              </Link>
+
+            <div className="nav-links">
+              <Link href="/home#demo">Live demo</Link>
+              <Link href="/home#how">How it works</Link>
+              <Link href="/home#features">Features</Link>
+              <Link href="/home#pricing">Pricing</Link>
+              <Link href="/faq">FAQ</Link>
+            </div>
+
+            <div className="nav-cta">
               <ThemeToggle />
-              <Button asChild size="sm" className="bg-indigo-600 hover:bg-indigo-500 text-white">
-                <Link href="/sign-in">Sign in</Link>
-              </Button>
-            </nav>
+              <NavSignIn />
+              <NavBookDemo />
+            </div>
           </div>
-        </header>
-        <main className="flex-1">{children}</main>
-        <footer className="border-t border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-[#07091c] py-8">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-500">
-            <span>© {new Date().getFullYear()} Voxelo. AI Receptionist for South African businesses.</span>
-            <div className="flex items-center gap-4">
-              <Link href="/faq" className="hover:text-slate-900 dark:hover:text-slate-300 transition-colors">FAQ</Link>
-              <Link href="mailto:info@voxelo.co.za" className="hover:text-slate-900 dark:hover:text-slate-300 transition-colors">Contact</Link>
-              <Link href="/sign-in" className="hover:text-slate-900 dark:hover:text-slate-300 transition-colors">Sign in</Link>
+        </nav>
+
+        <main>{children}</main>
+
+        {/* ── Site footer ── */}
+        <footer className="vox-footer">
+          <div className="wrap">
+            <div className="foot-grid">
+              <div className="foot-brand">
+                <div className="wm">
+                  <VoiceWave variant="rev" size={30} />
+                  Voxelo
+                </div>
+                <p>AI agents that handle every customer conversation — built to drop into any industry.</p>
+              </div>
+              <div className="foot-col">
+                <h4>Product</h4>
+                <Link href="/home#demo">Live demo</Link>
+                <Link href="/home#features">Features</Link>
+                <Link href="/home#pricing">Pricing</Link>
+                <Link href="/home#how">How it works</Link>
+                <Link href="/faq">FAQ</Link>
+              </div>
+              <div className="foot-col">
+                <h4>Company</h4>
+                <Link href="/about">About</Link>
+                <Link href="/careers">Careers</Link>
+                <Link href="/blog">Blog</Link>
+                <Link href="/contact">Contact</Link>
+              </div>
+              <div className="foot-col">
+                <h4>Legal</h4>
+                <Link href="/privacy">Privacy</Link>
+                <Link href="/terms">Terms</Link>
+                <Link href="/security">Security</Link>
+                <Link href="/dpa">DPA</Link>
+              </div>
+            </div>
+            <div className="foot-bottom">
+              <span>&copy; {new Date().getFullYear()} VOXELO, INC.</span>
+              <span>info@voxelo.co.za</span>
             </div>
           </div>
         </footer>
+
+        {/* ── Sticky chat FAB ── */}
+        <VoxFab />
+
+        {/* ── Book a demo modal (listens for open-demo-form event) ── */}
+        <BookDemoModal />
+        {/* ── Sign-in modal (listens for open-sign-in event) ── */}
+        <SignInModal />
       </div>
     </ThemeProvider>
   );

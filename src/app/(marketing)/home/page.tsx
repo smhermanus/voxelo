@@ -1,365 +1,185 @@
+﻿import type { Metadata } from "next";
 import Link from "next/link";
-import type { Metadata } from "next";
-import {
-  PhoneCall, MessageSquare, Calendar, Zap, Shield, Clock,
-  ArrowRight, Download, CheckCircle2, Sparkles,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { HeroSection } from "@/app/(marketing)/components/hero-section";
+import { DemoSection } from "@/app/(marketing)/components/demo-section";
+import { PricingSection } from "@/app/(marketing)/components/pricing-section";
+import { CtaBookDemo } from "@/app/(marketing)/components/cta-book-demo";
 
 export const metadata: Metadata = {
-  title: "AI Receptionist for South African Businesses",
+  title: "AI agents that handle every conversation",
   description:
-    "Voxelo answers every call 24/7, takes messages, books appointments, and handles emergencies — all in South African English.",
+    "Voxelo resolves customer conversations across chat, voice, and email — instantly, in your tone, for any industry.",
 };
 
-const features = [
+const FEATURES = [
   {
-    icon: PhoneCall,
+    icon: '<path d="M5 6h14a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H10l-4 3v-3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/>',
+    title: "Omnichannel",
+    desc: "Chat, voice, and email handled by one agent with a single shared memory of the customer.",
+  },
+  {
+    icon: '<circle cx="12" cy="8" r="3.2"/><path d="M5 20a7 7 0 0 1 14 0"/>',
+    title: "Seamless handoff",
+    desc: "When it's truly human work, Vox routes to the right person with full context — no repeating.",
+  },
+  {
+    icon: '<path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>',
     title: "Answers every call",
-    description: "24/7, no hold music, no voicemail. Every caller answered instantly — even during load-shedding.",
-    lightCard: "bg-blue-50 border-blue-100",
-    darkCard: "dark:bg-blue-500/10 dark:border-blue-500/20",
-    lightIcon: "bg-blue-100 text-blue-600",
-    darkIcon: "dark:bg-blue-500/15 dark:text-blue-400",
+    desc: "24/7, no hold music, no voicemail. no extra teams/costs. Every caller answers instantly in 30+ languages.",
   },
   {
-    icon: MessageSquare,
-    title: "Takes messages",
-    description: "Captures name, number, and message. Delivers via WhatsApp and email instantly.",
-    lightCard: "bg-violet-50 border-violet-100",
-    darkCard: "dark:bg-violet-500/10 dark:border-violet-500/20",
-    lightIcon: "bg-violet-100 text-violet-600",
-    darkIcon: "dark:bg-violet-500/15 dark:text-violet-400",
-  },
-  {
-    icon: Calendar,
-    title: "Books appointments",
-    description: "Collects all booking details, saves to your dashboard. You confirm — done.",
-    lightCard: "bg-emerald-50 border-emerald-100",
-    darkCard: "dark:bg-emerald-500/10 dark:border-emerald-500/20",
-    lightIcon: "bg-emerald-100 text-emerald-600",
-    darkIcon: "dark:bg-emerald-500/15 dark:text-emerald-400",
-  },
-  {
-    icon: Zap,
-    title: "Handles emergencies",
-    description: "Detects urgency, shifts tone, alerts you immediately. Never miss a burst pipe at 2am.",
-    lightCard: "bg-orange-50 border-orange-100",
-    darkCard: "dark:bg-orange-500/10 dark:border-orange-500/20",
-    lightIcon: "bg-orange-100 text-orange-600",
-    darkIcon: "dark:bg-orange-500/15 dark:text-orange-400",
-  },
-  {
-    icon: Shield,
-    title: "POPIA compliant",
-    description: "SA-hosted infrastructure, encrypted data, caller consent on recording.",
-    lightCard: "bg-sky-50 border-sky-100",
-    darkCard: "dark:bg-sky-500/10 dark:border-sky-500/20",
-    lightIcon: "bg-sky-100 text-sky-600",
-    darkIcon: "dark:bg-sky-500/15 dark:text-sky-400",
-  },
-  {
-    icon: Clock,
+    icon: '<circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"/>',
     title: "Live in 15 minutes",
-    description: "Keep your existing number. Forward calls to us. No hardware, no tech visits.",
-    lightCard: "bg-pink-50 border-pink-100",
-    darkCard: "dark:bg-pink-500/10 dark:border-pink-500/20",
-    lightIcon: "bg-pink-100 text-pink-600",
-    darkIcon: "dark:bg-pink-500/15 dark:text-pink-400",
+    desc: "Keep your existing number. Forward calls to us. No hardware, no tech visits.",
+  },
+  {
+    icon: '<path d="M12 3l8 4v5c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V7z"/>',
+    title: "Secure & POPIA compliant",
+    desc: "SA-hosted infrastructure, SOC 2, GDPR, and PII redaction built in. Encrypted data, caller consent on recording.",
+  },
+  {
+    icon: '<path d="M12 4v3m0 10v3m8-8h-3M7 12H4m13.5-5.5-2 2m-7 7-2 2m11 0-2-2m-7-7-2-2"/><circle cx="12" cy="12" r="3"/>',
+    title: "Takes action",
+    desc: "Delivers messages via WhatsApp and email instantly, books appointments, updates records through your tools, and more.",
   },
 ];
 
-const stats = [
-  { value: "24/7", label: "Always answering" },
-  { value: "15 min", label: "Setup time" },
-  { value: "0", label: "Missed calls" },
-  { value: "100%", label: "SA-hosted" },
+const STATS = [
+  { v: "100%",  l: "SA Hosted" },
+  { v: "15min", l: "setup time" },
+  { v: "0",  l: "missed calls" },
+  { v: "24/7", l: "always on, every time zone" },
 ];
 
-const highlights = [
-  "Works through load-shedding",
-  "SA English & accents",
-  "WhatsApp + phone + email",
-  "No lock-in contract",
+const INTEGRATIONS = [
+  "Zendesk", "Salesforce", "Shopify", "Intercom", "Slack",
+  "Twilio", "HubSpot", "Stripe", "Freshdesk", "Notion",
 ];
 
 export default function HomePage() {
   return (
     <>
-      <style>{`
-        @keyframes float-slow {
-          0%, 100% { transform: translateY(0px) scale(1); }
-          50% { transform: translateY(-30px) scale(1.05); }
-        }
-        @keyframes float-medium {
-          0%, 100% { transform: translateY(0px) translateX(0px); }
-          33% { transform: translateY(-20px) translateX(10px); }
-          66% { transform: translateY(10px) translateX(-15px); }
-        }
-        @keyframes shimmer-text {
-          0% { background-position: -200% center; }
-          100% { background-position: 200% center; }
-        }
-        @keyframes fade-up {
-          from { opacity: 0; transform: translateY(24px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes pulse-ring {
-          0% { box-shadow: 0 0 0 0 rgba(99,102,241,0.45); }
-          70% { box-shadow: 0 0 0 10px rgba(99,102,241,0); }
-          100% { box-shadow: 0 0 0 0 rgba(99,102,241,0); }
-        }
-        .animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
-        .animate-float-medium { animation: float-medium 11s ease-in-out infinite; }
-        .animate-float-fast { animation: float-slow 6s ease-in-out infinite reverse; }
-        .hero-text-1 { animation: fade-up 0.7s ease both; }
-        .hero-text-2 { animation: fade-up 0.7s 0.15s ease both; }
-        .hero-text-3 { animation: fade-up 0.7s 0.3s ease both; }
-        .hero-text-4 { animation: fade-up 0.7s 0.45s ease both; }
-        .hero-text-5 { animation: fade-up 0.7s 0.6s ease both; }
+      <HeroSection />
 
-        /* dark mode headline: white → indigo shimmer */
-        .dark .gradient-headline {
-          background: linear-gradient(135deg, #fff 0%, #a5b4fc 40%, #818cf8 60%, #fff 100%);
-          background-size: 200% auto;
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: shimmer-text 4s linear infinite;
-        }
-        /* light mode headline: deep indigo → violet shimmer */
-        .gradient-headline {
-          background: linear-gradient(135deg, #1e1b4b 0%, #4f46e5 35%, #7c3aed 65%, #1e1b4b 100%);
-          background-size: 200% auto;
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: shimmer-text 4s linear infinite;
-        }
-        .card-hover { transition: transform 0.25s ease, box-shadow 0.25s ease; }
-        .card-hover:hover { transform: translateY(-4px); }
-        .dark .card-hover:hover { box-shadow: 0 20px 40px -12px rgba(0,0,0,0.5); }
-        .card-hover:hover { box-shadow: 0 12px 30px -8px rgba(99,102,241,0.15); }
-        .glow-btn { animation: pulse-ring 2.5s ease-in-out infinite; }
-      `}</style>
-
-      <div className="flex flex-col bg-white dark:bg-[#050816]">
-
-        {/* ── HERO ─────────────────────────────────────────────────── */}
-        <section className="relative min-h-screen flex items-center overflow-hidden bg-white dark:bg-[#050816]">
-
-          {/* Ambient orbs — lighter in light mode */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div className="animate-float-slow absolute -top-32 -left-32 w-[600px] h-[600px] rounded-full bg-indigo-400/10 dark:bg-indigo-600/20 blur-[120px]" />
-            <div className="animate-float-medium absolute top-1/3 -right-40 w-[500px] h-[500px] rounded-full bg-violet-400/10 dark:bg-violet-600/15 blur-[120px]" />
-            <div className="animate-float-fast absolute -bottom-20 left-1/3 w-[400px] h-[400px] rounded-full bg-blue-400/8 dark:bg-blue-500/10 blur-[100px]" />
+      <section className="strip">
+        <div className="wrap strip-inner">
+          <span className="strip-label">Powering support for</span>
+          <div className="strip-logos">
+            <span>Lumen&nbsp;Goods</span>
+            <span>Harbor&nbsp;Mutual</span>
+            <span>Arc&nbsp;Bank</span>
+            <span>Nova&nbsp;Mobile</span>
+            <span>Wander</span>
+            <span>Meridian</span>
           </div>
+        </div>
+      </section>
 
-          {/* Grid overlay */}
-          <div
-            className="absolute inset-0 pointer-events-none opacity-[0.03] dark:opacity-[0.04]"
-            style={{
-              backgroundImage:
-                "linear-gradient(rgba(0,0,0,0.8) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.8) 1px,transparent 1px)",
-              backgroundSize: "60px 60px",
-            }}
-          />
+      <DemoSection />
 
-          <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-28 sm:py-36 text-center w-full">
-
-            {/* Badge */}
-            <div className="hero-text-1 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-medium mb-8
-              border-indigo-300/60 bg-indigo-50 text-indigo-700
-              dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:text-indigo-300">
-              <Sparkles className="size-3.5" />
-              Built for South Africa
+      <section className="section" id="how">
+        <div className="wrap">
+          <div className="section-head">
+            <p className="eyebrow">How it works</p>
+            <h2>Live in days, not quarters.</h2>
+          </div>
+          <div className="steps">
+            <div className="step">
+              <span className="n">STEP 01</span>
+              <h3>Connect your knowledge</h3>
+              <p>Point Voxelo at your help center, docs, and past tickets. It learns your products, policies, and edge cases in minutes.</p>
+              <div className="bar" />
             </div>
-
-            {/* Headline */}
-            <h1 className="hero-text-2 text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1]">
-              <span className="gradient-headline">Never miss</span>
-              <br />
-              <span className="text-slate-900 dark:text-white">a call. Ever.</span>
-            </h1>
-
-            {/* Sub */}
-            <p className="hero-text-3 mt-6 text-base sm:text-lg max-w-xl mx-auto leading-relaxed text-slate-600 dark:text-slate-400">
-              Voxelo is an AI receptionist that answers every call in your business&apos;s name,
-              24 hours a day — in natural South African English.
-            </p>
-
-            {/* CTA */}
-            <div className="hero-text-4 mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Button
-                asChild size="lg"
-                className="glow-btn w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-8 shadow-lg shadow-indigo-500/30"
-              >
-                <Link href="/sign-up">
-                  Start free trial <ArrowRight className="ml-2 size-4" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="ghost"
-                className="w-full sm:w-auto border text-slate-600 hover:text-slate-900 hover:bg-slate-100
-                  border-slate-300 dark:border-white/10 dark:text-slate-300 dark:hover:text-white dark:hover:bg-white/5"
-              >
-                <Link href="/faq">Read the FAQ</Link>
-              </Button>
+            <div className="step">
+              <span className="n">STEP 02</span>
+              <h3>Tune the voice</h3>
+              <p>Set the tone, guardrails, and escalation rules. Vox sounds like your brand — never robotic, never off-script.</p>
+              <div className="bar" />
             </div>
+            <div className="step">
+              <span className="n">STEP 03</span>
+              <h3>Deploy everywhere</h3>
+              <p>Drop the widget on your site, route your phone line, and connect email. One agent across every channel.</p>
+              <div className="bar" />
+            </div>
+          </div>
+        </div>
+      </section>
 
-            {/* Trust pills */}
-            <div className="hero-text-5 mt-10 flex flex-wrap justify-center gap-3">
-              {highlights.map((h) => (
-                <span key={h}
-                  className="flex items-center gap-1.5 rounded-full px-3 py-1 text-xs
-                    bg-slate-100 border border-slate-200 text-slate-600
-                    dark:bg-white/5 dark:border-white/10 dark:text-slate-400"
-                >
-                  <CheckCircle2 className="size-3.5 text-indigo-500 dark:text-indigo-400 shrink-0" />
-                  {h}
+      <section
+        className="section"
+        id="features"
+        style={{ background: "var(--paper-2)", borderTop: "1px solid var(--line)", borderBottom: "1px solid var(--line)" }}
+      >
+        <div className="wrap">
+          <div className="section-head">
+            <p className="eyebrow">Capabilities</p>
+            <h2>Everything a great agent does — at machine scale.</h2>
+          </div>
+          <div className="feat-grid">
+            {FEATURES.map((f) => (
+              <div key={f.title} className="feat">
+                <span className="ic">
+                  <svg viewBox="0 0 24 24" dangerouslySetInnerHTML={{ __html: f.icon }} />
                 </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Bottom fade */}
-          <div className="absolute bottom-0 inset-x-0 h-24 pointer-events-none
-            bg-linear-to-t from-white dark:from-[#050816] to-transparent" />
-        </section>
-
-        {/* ── STATS ────────────────────────────────────────────────── */}
-        <section className="relative py-12 border-y
-          bg-slate-50 border-slate-200
-          dark:bg-[#050816] dark:border-white/5">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 grid grid-cols-2 sm:grid-cols-4 gap-8 text-center">
-            {stats.map((s) => (
-              <div key={s.label}>
-                <p className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">{s.value}</p>
-                <p className="mt-1 text-xs uppercase tracking-wider text-slate-500 dark:text-slate-500">{s.label}</p>
+                <h3>{f.title}</h3>
+                <p>{f.desc}</p>
               </div>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ── FEATURES ─────────────────────────────────────────────── */}
-        <section className="relative py-20 sm:py-24 bg-white dark:bg-[#07091c]">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <div className="text-center mb-14">
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
-                Everything a receptionist does —{" "}
-                <span className="text-indigo-600 dark:text-indigo-400">without the cost</span>
-              </h2>
-              <p className="mt-3 max-w-lg mx-auto text-slate-500 dark:text-slate-400">
-                One subscription. Unlimited calls. Works across phone and WhatsApp.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {features.map((f) => (
-                <div key={f.title}
-                  className={`card-hover rounded-2xl border p-6 ${f.lightCard} ${f.darkCard}`}
-                >
-                  <div className={`size-10 rounded-xl flex items-center justify-center mb-4 ${f.lightIcon} ${f.darkIcon}`}>
-                    <f.icon className="size-5" />
-                  </div>
-                  <h3 className="font-semibold text-sm mb-1.5 text-slate-900 dark:text-white">{f.title}</h3>
-                  <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">{f.description}</p>
-                </div>
-              ))}
-            </div>
+      <section className="section vox-stats">
+        <div className="wrap">
+          <div className="stats-grid">
+            {STATS.map((s) => (
+              <div key={s.l} className="stat">
+                <div className="v">{s.v}</div>
+                <div className="l">{s.l}</div>
+              </div>
+            ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ── LOAD-SHEDDING CALLOUT ─────────────────────────────────── */}
-        <section className="relative overflow-hidden py-20 bg-indigo-600">
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[300px] bg-white/10 blur-[80px] rounded-full" />
-          </div>
-          <div className="relative max-w-3xl mx-auto px-4 sm:px-6 text-center">
-            <p className="text-xs font-semibold uppercase tracking-widest text-indigo-200 mb-4">
-              South Africa first
+      <section className="section vox-integrations">
+        <div className="wrap">
+          <div
+            className="section-head"
+            style={{ textAlign: "center", margin: "0 auto 44px" }}
+          >
+            <p className="eyebrow" style={{ justifyContent: "center" }}>
+              Integrations
             </p>
-            <h2 className="text-2xl sm:text-4xl font-bold text-white leading-tight">
-              The only missed call is one<br className="hidden sm:block" /> you chose to miss
-            </h2>
-            <p className="mt-5 text-indigo-100 max-w-lg mx-auto leading-relaxed">
-              Your AI receptionist lives in the cloud — not in your office. It keeps answering
-              through load-shedding, lunch breaks, and 11pm on a Sunday.
-            </p>
-            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Button asChild size="lg" className="w-full sm:w-auto bg-white text-indigo-700 hover:bg-indigo-50 font-semibold">
-                <Link href="/sign-up">
-                  Get started — free trial <ArrowRight className="ml-2 size-4" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="ghost"
-                className="w-full sm:w-auto border border-white/30 text-white hover:bg-white/10 hover:text-white"
-              >
-                <Link href="/faq">Have questions? Read the FAQ</Link>
-              </Button>
-            </div>
+            <h2>Plugs into the stack you already run.</h2>
           </div>
-        </section>
-
-        {/* ── FAQ + CONTACT ─────────────────────────────────────────── */}
-        <section className="py-16 border-t bg-slate-50 border-slate-200 dark:bg-[#07091c] dark:border-white/5">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-2 gap-5">
-
-            <div className="card-hover rounded-2xl border p-8 flex flex-col gap-4
-              bg-white border-slate-200 shadow-sm
-              dark:bg-white/3 dark:border-white/8">
-              <div className="size-10 rounded-xl flex items-center justify-center
-                bg-indigo-100 dark:bg-indigo-500/10">
-                <MessageSquare className="size-5 text-indigo-600 dark:text-indigo-400" />
+          <div className="int-grid">
+            {INTEGRATIONS.map((name) => (
+              <div key={name} className="int-chip">
+                <span className="d" />
+                {name}
               </div>
-              <div>
-                <h3 className="font-semibold text-slate-900 dark:text-white">Frequently Asked Questions</h3>
-                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                  Setup, pricing, data security, and how it all works.
-                </p>
-              </div>
-              <div className="flex items-center gap-3 mt-auto pt-2">
-                <Button asChild size="sm" className="bg-indigo-600 hover:bg-indigo-500 text-white">
-                  <Link href="/faq">Read the FAQ <ArrowRight className="ml-2 size-3.5" /></Link>
-                </Button>
-                <Button asChild variant="ghost" size="sm"
-                  className="border text-slate-600 hover:text-slate-900 border-slate-200 dark:border-white/10 dark:text-slate-400 dark:hover:text-white"
-                >
-                  <a href="/documents/FAQ-Client-Facing.pdf" download>
-                    <Download className="mr-1.5 size-3.5" /> PDF
-                  </a>
-                </Button>
-              </div>
-            </div>
-
-            <div className="card-hover rounded-2xl border p-8 flex flex-col gap-4
-              bg-white border-slate-200 shadow-sm
-              dark:bg-white/3 dark:border-white/8">
-              <div className="size-10 rounded-xl flex items-center justify-center
-                bg-emerald-100 dark:bg-emerald-500/10">
-                <PhoneCall className="size-5 text-emerald-600 dark:text-emerald-400" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-slate-900 dark:text-white">Talk to us</h3>
-                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                  Want a free demo? We&apos;ll set it up with your own business details so you hear
-                  it before you commit.
-                </p>
-              </div>
-              <div className="mt-auto pt-2">
-                <Button asChild variant="ghost" size="sm"
-                  className="border text-slate-600 hover:text-slate-900 border-slate-200 dark:border-white/10 dark:text-slate-300 dark:hover:text-white dark:hover:bg-white/5"
-                >
-                  <Link href="mailto:info@voxelo.co.za">
-                    Get in touch <ArrowRight className="ml-2 size-3.5" />
-                  </Link>
-                </Button>
-              </div>
-            </div>
-
+            ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-      </div>
+      <PricingSection />
+
+      <section className="section cta-band" id="cta">
+        <div className="wrap cta-inner">
+          <h2>Ready to hand off the busywork?</h2>
+          <p>See Voxelo answer your real customer questions in a 20-minute demo.</p>
+          <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
+            <Link href="#demo" className="btn btn-onink btn-lg">
+              Talk to an agent
+            </Link>
+            <CtaBookDemo />
+          </div>
+        </div>
+      </section>
+
     </>
   );
 }
