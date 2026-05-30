@@ -741,6 +741,11 @@
 .dark .modal-close   { background: var(--paper-2); border-color: var(--line); color: var(--ink-soft); }
 .dark .field input, .dark .field select, .dark .field textarea { background: var(--paper-2); color: var(--ink); border-color: var(--line); }
 
+/* Stats band */
+.dark .vox-stats     { background: var(--paper-2); }
+.dark .stat .v       { background: linear-gradient(180deg, var(--ink), var(--accent-light)); -webkit-background-clip: text; background-clip: text; }
+.dark .stat .l       { color: var(--ink-soft); }
+
 /* Cards */
 .dark .price         { background: var(--paper-2); color: var(--ink); }
 .dark .price.featured { box-shadow: 0 0 0 3px var(--accent-wash); }
