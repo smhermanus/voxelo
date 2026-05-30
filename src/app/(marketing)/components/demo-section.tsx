@@ -151,6 +151,7 @@ export function DemoSection() {
   const callSecsRef = useRef(0);
   const mutedRef    = useRef(false);
   const recogRef    = useRef<unknown>(null);
+  const audioRef    = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => { mutedRef.current = muted; }, [muted]);
 
@@ -163,6 +164,11 @@ export function DemoSection() {
   useEffect(() => {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = "";
+        audioRef.current = null;
+      }
       if (typeof window !== "undefined" && window.speechSynthesis) {
         window.speechSynthesis.cancel();
       }
@@ -170,18 +176,22 @@ export function DemoSection() {
   }, []);
 
   const stopSpeak = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.src = "";
+      audioRef.current = null;
+    }
     if (typeof window !== "undefined" && window.speechSynthesis) {
       window.speechSynthesis.cancel();
     }
     setSpeaking(false);
   }, []);
 
-  const speak = useCallback((text: string) => {
-    if (typeof window === "undefined") return;
-    const fallbackMs = Math.min(6000, 1200 + text.length * 32);
-    if (!window.speechSynthesis || mutedRef.current) {
+  const speakFallback = useCallback((text: string) => {
+    if (typeof window === "undefined" || !window.speechSynthesis) {
+      const ms = Math.min(6000, 1200 + text.length * 32);
       setSpeaking(true);
-      setTimeout(() => setSpeaking(false), fallbackMs);
+      setTimeout(() => setSpeaking(false), ms);
       return;
     }
     window.speechSynthesis.cancel();
@@ -207,6 +217,33 @@ export function DemoSection() {
       window.speechSynthesis.onvoiceschanged = () => { loadAndSpeak(); };
     }
   }, []);
+
+  const speak = useCallback((text: string) => {
+    if (typeof window === "undefined") return;
+    if (mutedRef.current) {
+      const ms = Math.min(6000, 1200 + text.length * 32);
+      setSpeaking(true);
+      setTimeout(() => setSpeaking(false), ms);
+      return;
+    }
+    setSpeaking(true);
+    fetch("/api/elevenlabs/tts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    })
+      .then(async (res) => {
+        if (!res.ok) throw new Error(`TTS ${res.status}`);
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const audio = new Audio(url);
+        audioRef.current = audio;
+        audio.onended = () => { URL.revokeObjectURL(url); setSpeaking(false); };
+        audio.onerror = () => { URL.revokeObjectURL(url); setSpeaking(false); };
+        await audio.play();
+      })
+      .catch(() => speakFallback(text));
+  }, [speakFallback]);
 
   const startTimer = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
