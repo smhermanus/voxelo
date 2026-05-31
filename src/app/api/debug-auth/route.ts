@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server";
+import { currentUser, auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 /** Temporary debug route — remove before shipping to customers */
@@ -7,12 +7,16 @@ export async function GET() {
     return new NextResponse("Not found", { status: 404 });
   }
 
-  const { userId, orgId, sessionClaims } = await auth();
+  const { userId, orgId } = await auth();
+  const user = await currentUser();
 
   return NextResponse.json({
     userId,
     orgId,
-    publicMetadata: (sessionClaims?.publicMetadata ?? null),
-    voxeloRole:     (sessionClaims?.publicMetadata as Record<string,unknown> | null)?.voxeloRole ?? null,
+    // From JWT (often null — publicMetadata not in default Clerk JWT)
+    jwtPublicMetadata: null,
+    // From currentUser() — always has live metadata (this is what the app uses)
+    publicMetadata: user?.publicMetadata ?? null,
+    voxeloRole:     user?.publicMetadata?.voxeloRole ?? null,
   });
 }
