@@ -20,7 +20,6 @@ const isPublicRoute = createRouteMatcher([
   "/api/agent(.*)",          // Called by ElevenLabs/LiveKit agent servers
   "/api/twilio(.*)",         // Twilio voice/status webhooks (Track B)
   "/api/elevenlabs/tts(.*)", // Public demo TTS — key is server-side only
-  "/api/debug-auth",         // Temporary auth diagnostics
 ]);
 
 const isOrgSelectionRoute  = createRouteMatcher(["/org-selection(.*)"]);
