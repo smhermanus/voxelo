@@ -1,31 +1,26 @@
 import { cookies } from "next/headers";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { AgentSidebar } from "@/features/agent-portal/components/agent-sidebar";
+import { requireAgent } from "@/lib/voxelo-auth";
 
-import { 
-  SidebarInset, 
-  SidebarProvider
-} from "@/components/ui/sidebar";
-import { DashboardSidebar } from "@/features/dashboard/components/dashboard-sidebar";
-import { attributeReferral } from "@/features/dashboard/actions/attribute-referral";
-
-export default async function DashboardLayout({
+export default async function AgentPortalLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // Silently attribute tenant to agent if a referral cookie is present
-  await attributeReferral();
+  await requireAgent();
 
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
 
   return (
     <SidebarProvider defaultOpen={defaultOpen} className="h-svh">
-      <DashboardSidebar />
+      <AgentSidebar />
       <SidebarInset className="min-h-0 min-w-0">
         <main className="flex min-h-0 flex-1 flex-col">
           {children}
         </main>
       </SidebarInset>
     </SidebarProvider>
-  )
-};
+  );
+}

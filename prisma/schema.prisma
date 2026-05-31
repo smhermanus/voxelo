@@ -13,6 +13,19 @@ datasource db {
   provider = "postgresql"
 }
 
+// ─── Voxelo-internal staff roles ─────────────────────────────────────────────
+enum VoxeloStaffRole {
+  SUPER_ADMIN
+  AGENT
+}
+
+// ─── Commission lifecycle ─────────────────────────────────────────────────────
+enum CommissionStatus {
+  PENDING
+  APPROVED
+  PAID
+}
+
 enum VoiceVariant {
   SYSTEM
   CUSTOM
@@ -89,12 +102,14 @@ model Tenant {
   ownerEmail    String
   createdAt     DateTime @default(now())
 
-  users          User[]
-  calls          Call[]
-  messages       Message[]
-  appointments   Appointment[]
-  knowledgeBases KnowledgeBase[]
-  settings       Setting[]
+  users           User[]
+  calls           Call[]
+  messages        Message[]
+  appointments    Appointment[]
+  knowledgeBases  KnowledgeBase[]
+  settings        Setting[]
+  attribution     TenantAttribution?
+  payfastPayments PayFastPayment[]
 
   @@index([clerkOrgId])
 }
@@ -190,4 +205,103 @@ model Setting {
 
   @@unique([tenantId, key])
   @@index([tenantId])
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// VOXELO INTERNAL — staff, commissions, billing
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Voxelo employees: super admins and sales agents
+model VoxeloStaff {
+  id                String          @id @default(cuid())
+  clerkUserId       String          @unique
+  name              String
+  email             String          @unique
+  role              VoxeloStaffRole @default(AGENT)
+  isActive          Boolean         @default(true)
+  // Salary in ZAR — 0 means commission-only
+  fixedSalary       Decimal         @default(0)    @db.Decimal(10, 2)
+  // Per-agent commission rate override (e.g. 0.15 = 15%)
+  commissionRate    Decimal         @default(0.15) @db.Decimal(5, 4)
+  commissionEnabled Boolean         @default(true)
+  // Unique code used in referral URLs: /ref/<code>
+  referralCode      String          @unique
+
+  attributions TenantAttribution[]
+  commissions  Commission[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([clerkUserId])
+  @@index([referralCode])
+}
+
+// Links a tenant to the agent who referred / signed them up
+model TenantAttribution {
+  id           String   @id @default(cuid())
+  tenantId     String   @unique    // one agent per tenant
+  agentId      String
+  referralCode String?             // populated when attributed via link
+  createdAt    DateTime @default(now())
+
+  tenant Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  agent  VoxeloStaff @relation(fields: [agentId],  references: [id], onDelete: Restrict)
+
+  @@index([agentId])
+}
+
+// Raw PayFast payment events received from their webhook
+model PayFastPayment {
+  id            String   @id @default(cuid())
+  tenantId      String?
+  pfPaymentId   String   @unique
+  amount        Decimal  @db.Decimal(10, 2)
+  itemName      String?
+  paymentStatus String   // COMPLETE | CANCELLED | FAILED
+  billingDate   DateTime
+  rawPayload    Json
+  createdAt     DateTime @default(now())
+
+  tenant      Tenant?      @relation(fields: [tenantId], references: [id], onDelete: SetNull)
+  commissions Commission[]
+
+  @@index([tenantId])
+  @@index([billingDate])
+}
+
+// One commission record per agent per PayFast payment
+model Commission {
+  id               String           @id @default(cuid())
+  agentId          String
+  tenantId         String
+  paymentId        String
+  grossAmount      Decimal          @db.Decimal(10, 2)
+  // Snapshot of the rate at calculation time — rate changes don't affect past records
+  commissionRate   Decimal          @db.Decimal(5, 4)
+  commissionAmount Decimal          @db.Decimal(10, 2)
+  // First day of the month this commission belongs to — used for grouping
+  month            DateTime
+  status           CommissionStatus @default(PENDING)
+  paidAt           DateTime?
+  notes            String?          @db.Text
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  agent   VoxeloStaff    @relation(fields: [agentId],   references: [id], onDelete: Restrict)
+  payment PayFastPayment @relation(fields: [paymentId], references: [id], onDelete: Restrict)
+
+  @@unique([agentId, paymentId])  // prevent double-counting the same payment
+  @@index([agentId])
+  @@index([agentId, month])
+  @@index([status])
+  @@index([month])
+}
+
+// Global Voxelo platform settings — singleton row with id = "global"
+model VoxeloSettings {
+  id                    String   @id @default("global")
+  // Fallback rate used when an agent has no individual override
+  defaultCommissionRate Decimal  @default(0.15) @db.Decimal(5, 4)
+  updatedAt             DateTime @updatedAt
 }
