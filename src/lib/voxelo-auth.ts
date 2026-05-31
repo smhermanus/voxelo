@@ -3,12 +3,22 @@ import { redirect } from "next/navigation";
 
 export type VoxeloRole = "super_admin" | "agent";
 
-/** Reads voxeloRole from Clerk publicMetadata on the current session. */
+/**
+ * Reads voxeloRole from Clerk publicMetadata.
+ * Handles "super_admin", "agent", "super_admin, agent", or array variants.
+ */
 export async function getVoxeloRole(): Promise<VoxeloRole | null> {
   const { sessionClaims } = await auth();
-  const meta = (sessionClaims?.publicMetadata ?? {}) as { voxeloRole?: string };
-  const role = meta.voxeloRole;
-  if (role === "super_admin" || role === "agent") return role;
+  const meta = (sessionClaims?.publicMetadata ?? {}) as { voxeloRole?: string | string[] };
+  const raw  = meta.voxeloRole;
+  if (!raw) return null;
+
+  const roles = Array.isArray(raw)
+    ? raw.map((r) => r.trim())
+    : raw.split(",").map((r) => r.trim());
+
+  if (roles.includes("super_admin")) return "super_admin";
+  if (roles.includes("agent"))       return "agent";
   return null;
 }
 

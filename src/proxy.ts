@@ -28,10 +28,25 @@ const isAgentPortalRoute   = createRouteMatcher(["/agent-portal(.*)"]);
 
 type VoxeloRole = "super_admin" | "agent";
 
+/**
+ * Handles all Clerk metadata formats:
+ *   "super_admin"           — single role (recommended)
+ *   "super_admin, agent"    — comma-separated string
+ *   ["super_admin","agent"] — array value
+ * Returns highest-privilege role found, or null.
+ */
 function getVoxeloRole(sessionClaims: Record<string, unknown> | null | undefined): VoxeloRole | null {
-  const meta = sessionClaims?.publicMetadata as { voxeloRole?: string } | undefined;
-  const role = meta?.voxeloRole;
-  if (role === "super_admin" || role === "agent") return role;
+  const meta = sessionClaims?.publicMetadata as { voxeloRole?: string | string[] } | undefined;
+  const raw  = meta?.voxeloRole;
+  if (!raw) return null;
+
+  // Normalise to an array of trimmed strings
+  const roles: string[] = Array.isArray(raw)
+    ? raw.map((r) => r.trim())
+    : raw.split(",").map((r) => r.trim());
+
+  if (roles.includes("super_admin")) return "super_admin";
+  if (roles.includes("agent"))       return "agent";
   return null;
 }
 
@@ -53,23 +68,32 @@ export default clerkMiddleware(async (auth, req) => {
   // ── Super-admin portal ──────────────────────────────────────────────────────
   if (isSuperAdminRoute(req)) {
     if (voxeloRole !== "super_admin") {
-      return NextResponse.redirect(new URL("/dashboard", req.url));
+      // If they also have an org, send to tenant dashboard; otherwise sign-in
+      return NextResponse.redirect(new URL(orgId ? "/dashboard" : "/sign-in", req.url));
     }
-    return NextResponse.next(); // staff — no org required
+    return NextResponse.next(); // staff — no org context required
   }
 
   // ── Agent portal ────────────────────────────────────────────────────────────
   if (isAgentPortalRoute(req)) {
     if (voxeloRole !== "agent" && voxeloRole !== "super_admin") {
-      return NextResponse.redirect(new URL("/dashboard", req.url));
+      return NextResponse.redirect(new URL(orgId ? "/dashboard" : "/sign-in", req.url));
     }
-    return NextResponse.next(); // staff — no org required
+    return NextResponse.next(); // staff — no org context required
   }
 
   // ── Tenant routes ───────────────────────────────────────────────────────────
   // Allow org selection page
   if (isOrgSelectionRoute(req)) {
     return NextResponse.next();
+  }
+
+  // Staff users don't need an org — send them to their portal if they land here
+  if (voxeloRole === "super_admin") {
+    return NextResponse.redirect(new URL("/super-admin", req.url));
+  }
+  if (voxeloRole === "agent") {
+    return NextResponse.redirect(new URL("/agent-portal", req.url));
   }
 
   // Tenant users must have an org selected
