@@ -81,7 +81,7 @@ export default function HomePage() {
         <div className="wrap">
           <div className="section-head">
             <p className="eyebrow">How it works</p>
-            <h2>Live in days, not quarters.</h2>
+            <h2>Live in 15 minutes, not weeks.</h2>
           </div>
           <div className="steps">
             <div className="step">

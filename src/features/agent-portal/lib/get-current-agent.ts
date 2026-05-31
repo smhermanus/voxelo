@@ -11,8 +11,8 @@ export async function getCurrentAgent() {
     where: { clerkUserId: userId },
   });
 
-  // If they have the voxeloRole metadata but no DB row yet, send them somewhere safe
-  if (!agent) redirect("/sign-in");
+  // Role is set in Clerk but no VoxeloStaff DB record yet — admin needs to add them
+  if (!agent) redirect("/agent-portal/setup");
 
   return agent;
 }
